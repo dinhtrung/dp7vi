@@ -1,0 +1,67 @@
+name = Drupal 7 Vietnamese Installation Profile
+description = Install with commonly used features pre-configured for Vietnamese.
+version = VERSION
+core = 7.x
+
+; Standard profile modules
+dependencies[] = block
+; dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = toolbar
+dependencies[] = overlay
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = rdf
+
+; Site-wide support modules
+dependencies[] = backup_migrate
+dependencies[] = fences
+dependencies[] = ctools
+dependencies[] = token
+dependencies[] = jquery_update
+dependencies[] = strongarm
+dependencies[] = features
+dependencies[] = realname
+
+; Usually used
+dependencies[] = wysiwyg_filter
+dependencies[] = ckeditor
+dependencies[] = views
+dependencies[] = views_ui
+dependencies[] = transliteration
+dependencies[] = imce
+dependencies[] = tagadelic
+dependencies[] = taxonomy_menu
+
+; SEO
+dependencies[] = metatag
+dependencies[] = metatag_ui
+dependencies[] = pathauto
+
+; Multilanguage support
+dependencies[] = locale
+dependencies[] = l10n_client
+dependencies[] = variable
+dependencies[] = i18n
+dependencies[] = i18nviews
+dependencies[] = i18n_node
+dependencies[] = i18n_taxonomy
+dependencies[] = i18n_menu
+dependencies[] = i18n_block
+dependencies[] = contact
+dependencies[] = i18n_contact
+
+dependencies[] = l10n_update
