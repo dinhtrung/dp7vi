@@ -16,6 +16,7 @@ projects[features][version] = "2.0-rc1"
 projects[fences][version] = "1.0"
 
 projects[i18n][version] = "1.9"
+projects[i18n][patch][1252144] = https://drupal.org/files/i18n_string-Support-text-format-elements-fix-1252144.patch
 
 projects[i18nviews][version] = "3.x-dev"
 

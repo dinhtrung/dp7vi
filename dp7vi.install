@@ -402,6 +402,7 @@ function dp7vi_install() {
   $instance = array(
     'field_name' => 'field_image',
     'entity_type' => 'node',
+    'fences_wrapper' => 'figure',		// Add fences support
     'label' => 'Image',
     'bundle' => 'article',
     'description' => st('Upload an image to go with this article.'),
@@ -499,4 +500,56 @@ function dp7vi_install() {
   variable_set('fences_default_classes', 1);
   variable_set('fences_default_markup', 1);
   
+  
+  // Create an image field named "Image", enabled for the 'article' content type.
+  // Many of the following values will be defaulted, they're included here as an illustrative examples.
+  // See http://api.drupal.org/api/function/field_create_field/7
+
+  $field = array(
+    'field_name' => 'field_full_name',
+    'type' => 'text',
+    'cardinality' => 1,
+    'locked' => FALSE,
+    'indexes' => array('fid' => array('fid')),
+    'settings' => array(
+      'max_length' => 255,
+    ),
+  );
+  field_create_field($field);
+
+
+ $instance = array(
+    'field_name' => 'field_full_name',
+    'entity_type' => 'user',
+    'bundle' => 'user',
+    'label' => 'Full Name',
+    'required' => 1,
+    'fences_wrapper' => 'figure',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => st('Please enter your full name. This name will be used in your contents.'),
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 1,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 0,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+  );
+  field_create_instance($instance);
+  variable_set('realname_pattern', "[user:field_full_name]");
 }
