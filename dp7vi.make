@@ -2,7 +2,14 @@
 core = 7.x
 
 api = 2
-projects[drupal][version] = "7.22"
+projects[drupal][version] = "7.23"
+
+; Profiles
+; Please fill the following out. Type may be one of get, git, bzr or svn,
+; and url is the url of the download.
+projects[dp7vi][download][type] = "git"
+projects[dp7vi][download][url] = "https://github.com/dinhtrung/dp7vi.git"
+projects[dp7vi][type] = "profile"
 
 ; Modules
 projects[backup_migrate][version] = "2.7"
@@ -10,8 +17,16 @@ projects[backup_migrate][version] = "2.7"
 projects[ctools][version] = "1.3"
 
 projects[ckeditor][version] = "1.13"
-
 projects[features][version] = "2.0-rc1"
+projects[context][version] = "3.0-beta7"
+
+projects[ds][version] = "2.4"
+
+projects[features][version] = "2.0-rc2"
+
+projects[feed_import][version] = "2.6"
+
+projects[feeds][version] = "2.0-alpha8"
 
 projects[fences][version] = "1.0"
 
@@ -20,11 +35,25 @@ projects[i18n][patch][1252144] = https://drupal.org/files/i18n_string-Support-te
 
 projects[i18nviews][version] = "3.x-dev"
 
+projects[imce][version] = "1.7"
+
+projects[job_scheduler][version] = "2.0-alpha3"
+
+projects[jquery_update][version] = "2.3"
+
 projects[l10n_client][version] = "1.2"
 
 projects[l10n_update][version] = "1.0-beta3"
 
+projects[languageicons][version] = "1.0"
+
+projects[metatag][version] = "1.0-beta7"
+
+projects[panels][version] = "3.3"
+
 projects[pathauto][version] = "1.2"
+
+projects[realname][version] = "1.1"
 
 projects[strongarm][version] = "2.0"
 
@@ -41,4 +70,10 @@ projects[variable][version] = "2.2"
 projects[views][version] = "3.7"
 
 projects[wysiwyg_filter][version] = "1.6-rc2"
+
+; Please fill the following out. Type may be one of get, git, bzr or svn,
+; and url is the url of the download.
+projects[media][download][type] = ""
+projects[media][download][url] = ""
+projects[media][type] = "module"
 
