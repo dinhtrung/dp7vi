@@ -32,4 +32,5 @@ Các module hỗ trợ ngôn ngữ:
 * pathauto
 * transliteration
 
+## Cài đặt qua Drush
 

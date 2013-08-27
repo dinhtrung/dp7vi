@@ -325,7 +325,7 @@ function dp7vi_install() {
     ),
   );
   field_create_instance($instance);
-  
+
   // Create a default vocabulary named "Category", enabled for the 'article' content type.
   $description = st('Use tags to group articles on similar topics into categories.');
   $help = st('Choose a category to display the content into site navigation.');
@@ -482,25 +482,25 @@ function dp7vi_install() {
     ->execute();
   variable_set('admin_theme', 'seven');
   variable_set('node_admin_theme', '1');
-  
+
   // Disable clean URL
   variable_set('clean_url', "FALSE");
   variable_set('file_private_path', "../private_html");
   variable_set('pathauto_transliterate', 1);
-  
+
   // Tuning the i18n module
   variable_set('i18n_string_source_language', "en");
   variable_set('i18n_string_allowed_formats', array('filtered_html' => 'filtered_html', 'full_html' => 'full_html', 'plain_text' => 'plain_text'));
-  
+
   // Tuning the l10n_client
   variable_set('l10n_client_server', "http://localize.drupal.org");
   variable_set('l10n_client_use_server', 1);
-  
+
   // Using fences
   variable_set('fences_default_classes', 1);
   variable_set('fences_default_markup', 1);
-  
-  
+
+
   // Create an image field named "Image", enabled for the 'article' content type.
   // Many of the following values will be defaulted, they're included here as an illustrative examples.
   // See http://api.drupal.org/api/function/field_create_field/7
@@ -510,7 +510,6 @@ function dp7vi_install() {
     'type' => 'text',
     'cardinality' => 1,
     'locked' => FALSE,
-    'indexes' => array('fid' => array('fid')),
     'settings' => array(
       'max_length' => 255,
     ),
