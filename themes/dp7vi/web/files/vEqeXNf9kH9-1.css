@@ -1,0 +1,11 @@
+/* Effective stylesheet produced by snapshot save */
+@keyframes show {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes show {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+._42ft::-moz-focus-inner { border: 0px none; padding: 0px; }
+.uiButton input::-moz-focus-inner { border: 0px none; padding: 0px; }

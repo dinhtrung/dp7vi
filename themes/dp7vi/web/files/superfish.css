@@ -1,0 +1,6 @@
+/* Effective stylesheet produced by snapshot save */
+.sf-menu, .sf-menu * { list-style: none outside none; margin: 0px; padding: 0px; }
+.sf-menu { line-height: 1; z-index: 497; }
+.sf-menu li { float: left; position: relative; z-index: 498; }
+.sf-menu a { display: block; position: relative; }
+.sf-menu li:hover, .sf-menu li.sfHover, .sf-menu li:hover ul, .sf-menu li.sfHover ul { z-index: 499; }

@@ -1,0 +1,33 @@
+name        = Dp7vi
+description = This theme is used to create simple theme from scratch.
+screenshot  = screenshot.png
+
+core        = 7.x
+engine      = phptemplate
+
+stylesheets[all][] = system.menus.css
+stylesheets[all][] = system.messages.css
+stylesheets[all][] = system.theme.css
+
+stylesheets[all][] = css/styles.css
+
+regions[top_left]    	= Top Left
+regions[top_right]    	= Top Right
+regions[header]         = Header
+regions[navigation]     = Navigation bar
+regions[highlighted]    = Highlighted
+regions[slider]    = Slider
+regions[help]           = Help
+regions[content]        = Content
+regions[sidebar_first]  = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[footer_first]   = Footer First
+regions[footer_second]  = Footer Second
+regions[footer_third]   = Footer Third
+regions[footer_fourth]  = Footer Fourth
+regions[footer]         = Footer
+regions[bottom]         = Page bottom
+regions[page_top]       = Page top
+regions[page_bottom]    = Page bottom
+
+plugins[panels][layouts] = panels-layouts

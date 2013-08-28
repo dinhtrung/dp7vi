@@ -1,0 +1,6 @@
+/* Effective stylesheet produced by snapshot save */
+.container-inline div, .container-inline label { display: inline; }
+.element-invisible { position: absolute ! important; clip: rect(1px, 1px, 1px, 1px); overflow: hidden; height: 1px; }
+.element-invisible.element-focusable:active, .element-invisible.element-focusable:focus { position: static ! important; clip: auto; overflow: visible; height: auto; }
+.clearfix:after { content: "."; display: block; height: 0px; clear: both; visibility: hidden; }
+:first-child + html .clearfix { min-height: 1%; }
