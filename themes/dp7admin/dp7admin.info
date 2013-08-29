@@ -1,0 +1,24 @@
+name        = Dp7admin
+description = Using Bootstrap 3 Framework to create a new Administrator Theme.
+screenshot  = screenshot.png
+
+core        = 7.x
+engine      = phptemplate
+
+stylesheets[all][] = system.menus.css
+stylesheets[all][] = system.messages.css
+stylesheets[all][] = system.theme.css
+
+stylesheets[all][] = css/styles.css
+
+regions[header]        = Header
+regions[help]          = Help
+regions[content]       = Content
+regions[footer]        = Footer
+
+regions[page_top]       = Page top
+regions[page_bottom]    = Page bottom
+
+settings[shortcut_module_link]    = 1
+
+plugins[panels][layouts] = panels-layouts

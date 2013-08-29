@@ -1,0 +1,49 @@
+//
+// Thumbnails
+// --------------------------------------------------
+$thumbnail-padding:           4px !default;
+$thumbnail-bg:                #fff !default;
+$thumbnail-border:            #ddd !default;
+$thumbnail-border-radius: 		4px !default;
+
+$thumbnail-caption-color:     #333 !default;
+$thumbnail-caption-padding:   9px !default;
+@mixin img-thumbnail() {
+  padding: $thumbnail-padding;
+  line-height: $line-height-base;
+  background-color: $thumbnail-bg;
+  border: 1px solid $thumbnail-border;
+  @include border-radius($thumbnail-border-radius);
+  @include transition(all .2s ease-in-out);
+
+  // Keep them at most 100% wide
+  @include img-responsive(inline-block);
+}
+
+.img-thumbnail { @include img-thumbnail(); }
+// Mixin and adjust the regular image class
+.thumbnail {
+  @include img-thumbnail();
+  display: block; // Override the inline-block from `.img-thumbnail`
+
+  > img {
+    @include img-responsive();
+  }
+}
+
+
+// Add a hover state for linked versions only
+a.thumbnail:hover,
+a.thumbnail:focus {
+  border-color: $link-color;
+}
+
+// Images and captions
+.thumbnail > img {
+  margin-left: auto;
+  margin-right: auto;
+}
+.thumbnail .caption {
+  padding: $thumbnail-caption-padding;
+  color: $thumbnail-caption-color;
+}
