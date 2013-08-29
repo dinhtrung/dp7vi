@@ -55,16 +55,30 @@
 
 @import "bootstrap/tables";
 @import "bootstrap/forms";
-.form-item { @extend .form-group;
-	input { @extend .form-control; }
+.form-item { 
+	@extend .form-group;
+	input, select, textarea { @extend .form-control;  }
+	select { @extend .input-sm; }
+	.description { @extend .help-block; }
+	.error { @extend .has-error; }
 }
+	.form-checkbox { @extend .checkbox; }
+	.form-radio { @extend .radio; }
+	.form-text { @extend .input-lg; }
 @import "bootstrap/buttons";
 .form-submit { @extend .btn; @extend .btn-primary; }
-ul.inline { @extend .list-unstyled;
-	li { display: inline; }
+ul.inline { 
+	@extend .list-unstyled;
+	margin: 1.5em 0;
+	li { display: inline; margin-right: 1em; }
 }
-.node ul.links a { @extend .btn; @extend .btn-default; }
-
+// .node ul.links a { @extend .btn; @extend .btn-default; }
+.node-readmore a { @extend .btn; @extend .btn-primary; }
+.comment-comments a { @extend .btn; @extend .btn-info; }
+.comment_forbidden { 
+	font-style: italic; 
+}
+.node ul.links .last { float: right; }
 // Components
 /* @import "component-animations"; */
 /* @import "glyphicons"; */
@@ -91,7 +105,7 @@ ul.field-tags { list-style: none; li { display: inline; margin-right: 1em;} }
 /* @import "progress-bars"; */
 /* @import "media"; */
 /* @import "list-group"; */
-/* @import "panels"; */
+@import "bootstrap/panels";
 @import "bootstrap/wells";
 /* @import "close"; */
 
@@ -130,3 +144,38 @@ $navbar-brand-hover-color:         darken($navbar-link-color, 10%);
 $navbar-brand-hover-bg:            transparent;
 
 #block-superfish-1 { @include superfish($navbar-link-color, $navbar-link-active-color, $navbar-link-active-bg, $navbar-bg, darken($navbar-bg, 5), darken($navbar-bg, 10)); }
+
+@mixin list-border($bg){
+//	border-top: 1px solid lighten($bg, 5);
+	padding: 0;
+	li {
+		border-bottom: 1px solid lighten($bg, 5);
+		padding: 0.5em 0.5em 0.5em 3em;
+		list-style-type: none;
+		background: transparent image-url("list.png") no-repeat center left;
+	}
+}
+
+.sidebars {
+	.block {
+		@extend .panel;
+		&.odd { @extend .panel-success; }
+		&.even { @extend .panel-info; }
+	}
+		.block-heading { @extend .panel-heading; }
+		.block-title { @extend .panel-title; }
+		.block-content { @extend .panel-body; }
+}
+
+
+#footer {
+	border-top: 0.5em solid $brand-primary; 
+	background: #333; 
+	color: #fff;
+	padding: 1.5em 0;
+	a { 
+		color: LightYellow; 
+		&:hover, &:active, &:focus { color: #fff; text-decoration: underline; }
+	}
+	.view-content ul { @include list-border(#333); }
+}

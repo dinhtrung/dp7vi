@@ -19,7 +19,8 @@
 table { @extend .table; @extend .table-responsive; @extend .table-bordered; @extend .table-striped; }
 
 @import "bootstrap/forms";
-.form-item { @extend .form-group;
+.form-item { 
+	@extend .form-group;
 	input, select, textarea { @extend .form-control;  }
 	select { @extend .input-sm; }
 	.description { @extend .help-block; }
