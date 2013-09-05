@@ -127,7 +127,7 @@ input[type="number"] {
   border: 1px solid $input-border;
   @include border-radius($input-border-radius);
   @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
-  @include transition("border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+  @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
 
   // Customize the `:focus` state to imitate native WebKit styles.
   @include form-control-focus();
@@ -136,18 +136,20 @@ input[type="number"] {
   // Note: HTML5 says that controls under a fieldset > legend:first-child won't
   // be disabled if the fieldset is disabled. Due to implementation difficulty,
   // we don't honor that edge case; we style them as disabled anyway.
-  [disabled],
-  [readonly],
+  &[disabled],
+  &[readonly],
   fieldset[disabled] & {
     cursor: not-allowed;
     background-color: $input-bg-disabled;
   }
+
+  // Reset height for `textarea`s
+  textarea & {
+    height: auto;
+  }
 }
 
-// Reset height for `textarea`s
-textarea.form-control {
-	height: auto;
-}
+
 // Form groups
 //
 // Designed to help with the organization and spacing of vertical forms. For
@@ -221,10 +223,16 @@ input[type="checkbox"],
 }
 
 // Form control sizing
+@mixin input-sm {
+  @include input-size($input-height-small, $padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
+}
 .input-sm {
   @include input-size($input-height-small, $padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
 }
 
+@mixin input-lg {
+  @include input-size($input-height-large, $padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
+}
 .input-lg {
   @include input-size($input-height-large, $padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
 }
@@ -284,7 +292,7 @@ input[type="checkbox"],
 //
 // Heads up! This is mixin-ed into `.navbar-form` in navbars.less.
 
-.form-inline {
+@mixin form-inline {
 
   // Kick in the inline
   @media (min-width: $screen-tablet) {
@@ -317,7 +325,7 @@ input[type="checkbox"],
     }
   }
 }
-
+.form-inline { @include form-inline(); }
 
 // Horizontal forms
 //

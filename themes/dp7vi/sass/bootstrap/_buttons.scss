@@ -2,51 +2,6 @@
 // Buttons
 // --------------------------------------------------
 
-// Button variants
-// -------------------------
-// Easily pump out default styles, as well as :hover, :focus, :active,
-// and disabled options for all buttons
-@mixin button-variant($color, $background, $border) {
-  color: $color;
-  background-color: $background;
-  border-color: $border;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &.active,
-  .open .dropdown-toggle & {
-    color: $color;
-    background-color: darken($background, 8%);
-        border-color: darken($border, 12%);
-  }
-  &:active,
-  &.active,
-  .open .dropdown-toggle & {
-    background-image: none;
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &,
-    &:hover,
-    &:focus,
-    &:active,
-    &.active {
-      background-color: $background;
-          border-color: $border
-    }
-  }
-}
-
-// Button sizes
-// -------------------------
-@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
-  padding: $padding-vertical $padding-horizontal;
-  font-size: $font-size;
-  line-height: $line-height;
-  @include border-radius($border-radius);
-}
 
 // Base styles
 // --------------------------------------------------
@@ -166,18 +121,21 @@
 // Button Sizes
 // --------------------------------------------------
 
-.btn-lg {
+@mixin btn-lg {
   // line-height: ensure even-numbered height of button next to large input
   @include button-size($padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
 }
-.btn-sm,
-.btn-xs {
+.btn-lg { @include btn-lg; }
+@mixin btn-sm {
   // line-height: ensure proper height of button next to small input
   @include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
 }
-.btn-xs {
+.btn-sm { @include btn-sm; }
+
+@mixin btn-xs {
   padding: 1px 5px;
 }
+.btn-xs { @include btn-sm; @include btn-xs; }
 
 
 // Block button

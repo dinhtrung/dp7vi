@@ -2,10 +2,13 @@
 // Navs
 // --------------------------------------------------
 
+// Nav variations
+// --------------------------------------------------
+
 // Justified nav links
 // -------------------------
 
-@mixin nav-justified {
+@mixin nav-justified() {
   width: 100%;
 
   > li {
@@ -22,9 +25,10 @@
     }
   }
 }
+.nav-justified { @include nav-justified(); }
 
 // Move borders to anchors instead of bottom of list
-@mixin nav-tabs-justified {
+@mixin nav-tabs-justified() {
   border-bottom: 0;
   > li > a {
     border-bottom: 1px solid $nav-tabs-justified-link-border-color;
@@ -36,6 +40,8 @@
     border-bottom-color: $nav-tabs-justified-active-link-border-color;
   }
 }
+
+.nav-tabs-justified { @include nav-tabs-justified(); }
 
 // Base class
 // --------------------------------------------------
@@ -121,7 +127,7 @@
     }
 
     // Active state, and it's :hover to override normal :hover
-    &.active > a, &.is-active > a {
+    &.active > a {
       &,
       &:hover,
       &:focus {
@@ -178,10 +184,6 @@
     }
   }
 }
-
-
-// Nav variations
-// --------------------------------------------------
 
 
 
