@@ -1,463 +1,442 @@
 <?php
-/**
- * @file
- * Contains functions to alter Drupal's markup for the dp7vi theme.
- *
- * IMPORTANT WARNING: DO NOT MODIFY THIS FILE.
- *
- * The base dp7vi theme is designed to be easily extended by its sub-themes. You
- * shouldn't modify this or any of the CSS or PHP files in the root dp7vi/ folder.
- * See the online documentation for more information:
- *   https://drupal.org/documentation/theme/dp7vi
- */
-// @TODO: Turn this off on production mode.
-// Rebuild .info data.
-system_rebuild_theme_data ();
-// Rebuild theme registry.
-drupal_theme_rebuild ();
-drupal_set_message ( t ( 'For easier theme development, the theme registry is being rebuilt on every page request. It is <em>extremely</em> important to <a href="!link">turn off this feature</a> on production websites.', array (
-		'!link' => url ( 'admin/appearance/settings/' . $GLOBALS ['theme'] )
-) ), 'warning', FALSE );
 
 /**
  * Return a themed breadcrumb trail.
  *
- * @param $variables -
- *        	title: An optional string to be used as a navigational heading to give
- *        	context for breadcrumb links to screen-reader users.
- *        	- title_attributes_array: Array of HTML attributes for the title. It is
- *        	flattened into a string within the theme function.
- *        	- breadcrumb: An array containing the breadcrumb links.
- * @return A string containing the breadcrumb output.
+ * @param $variables
+ *   - title: An optional string to be used as a navigational heading to give
+ *     context for breadcrumb links to screen-reader users.
+ *   - title_attributes_array: Array of HTML attributes for the title. It is
+ *     flattened into a string within the theme function.
+ *   - breadcrumb: An array containing the breadcrumb links.
+ * @return
+ *   A string containing the breadcrumb output.
  */
 function dp7vi_breadcrumb($variables) {
-	$breadcrumb = $variables ['breadcrumb'];
-	$output = '';
+  $breadcrumb = $variables['breadcrumb'];
+  $output = '';
 
-	// Determine if we are to display the breadcrumb.
+  // Determine if we are to display the breadcrumb.
+    // Return the breadcrumb with separators.
+    if (!empty($breadcrumb)) {
+        $item = menu_get_item();
+        if (!empty($item['tab_parent'])) {
+          // If we are on a non-default tab, use the tab's title.
+          $breadcrumb[] = check_plain($item['title']);
+        } else {
+          $breadcrumb[] = drupal_get_title();
+        }
 
-	// Optionally get rid of the homepage link.
-	$show_breadcrumb_home = theme_get_setting ( 'dp7vi_breadcrumb_home' );
-	if (! $show_breadcrumb_home) {
-		array_shift ( $breadcrumb );
-	}
+      // Provide a navigational heading to give context for breadcrumb links to
+      // screen-reader users.
+      if (empty($variables['title'])) {
+        $variables['title'] = t('You are here');
+      }
+      // Unless overridden by a preprocess function, make the heading invisible.
+      if (!isset($variables['title_attributes_array']['class'])) {
+        $variables['title_attributes_array']['class'][] = 'element-invisible';
+      }
 
-	// Return the breadcrumb with separators.
-	if (! empty ( $breadcrumb )) {
-		$trailing_separator = $title = '';
-		$item = menu_get_item ();
-		if (! empty ( $item ['tab_parent'] )) {
-			// If we are on a non-default tab, use the tab's title.
-			$breadcrumb [] = check_plain ( $item ['title'] );
-		} else {
-			$breadcrumb [] = drupal_get_title ();
-		}
+      // Build the breadcrumb trail.
+      $output = '<nav class="navbar" role="navigation">';
+      $output .= '<h2' . drupal_attributes($variables['title_attributes_array']) . '>' . $variables['title'] . '</h2>';
+      $output .= '<ol class="breadcrumb"><li>' . implode('</li><li>', $breadcrumb) . '</li></ol>';
+      $output .= '</nav>';
+  }
 
-		// Provide a navigational heading to give context for breadcrumb links to
-		// screen-reader users.
-		if (empty ( $variables ['title'] )) {
-			$variables ['title'] = t ( 'You are here' );
-		}
-		// Unless overridden by a preprocess function, make the heading invisible.
-		if (! isset ( $variables ['title_attributes_array'] ['class'] )) {
-			$variables ['title_attributes_array'] ['class'] [] = 'element-invisible';
-		}
-
-		// Build the breadcrumb trail.
-		$output = '<nav class="breadcrumb" role="navigation">';
-		$output .= '<h2' . drupal_attributes ( $variables ['title_attributes_array'] ) . '>' . $variables ['title'] . '</h2>';
-		$output .= '<ol class="breadcrumb"><li>' . implode ( '</li><li>', $breadcrumb ) . $trailing_separator . '</li></ol>';
-		$output .= '</nav>';
-	}
-
-	return $output;
+  return $output;
 }
 
 /**
  * Override or insert variables into the html template.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered. This is usually "html", but can
- *        	also be "maintenance_page" since dp7vi_preprocess_maintenance_page() calls
- *        	this function to have consistent variables.
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered. This is usually "html", but can
+ *   also be "maintenance_page" since dp7vi_preprocess_maintenance_page() calls
+ *   this function to have consistent variables.
  */
 function dp7vi_preprocess_html(&$variables, $hook) {
-	// Add variables and paths needed for HTML5 and responsive support.
-	$variables ['base_path'] = base_path ();
-	$variables ['directory'] = base_path () . drupal_get_path ( 'theme', 'dp7vi' );
-	// Attributes for html element.
-	$variables ['html_attributes_array'] = array (
-			'lang' => $variables ['language']->language,
-			'dir' => $variables ['language']->dir
-	);
+  // Add variables and paths needed for HTML5 and responsive support.
+  $variables['base_path'] = base_path();
 
-	// Send X-UA-Compatible HTTP header to force IE to use the most recent
-	// rendering engine or use Chrome's frame rendering engine if available.
-	// This also prevents the IE compatibility mode button to appear when using
-	// conditional classes on the html tag.
-	if (is_null ( drupal_get_http_header ( 'X-UA-Compatible' ) )) {
-		drupal_add_http_header ( 'X-UA-Compatible', 'IE=edge,chrome=1' );
-	}
+  // Attributes for html element.
+  $variables['html_attributes_array'] = array(
+    'lang' => $variables['language']->language,
+    'dir' => $variables['language']->dir,
+  );
 
-	// Return early, so the maintenance page does not call any of the code below.
-	if ($hook != 'html') {
-		return;
-	}
+  // Send X-UA-Compatible HTTP header to force IE to use the most recent
+  // rendering engine or use Chrome's frame rendering engine if available.
+  // This also prevents the IE compatibility mode button to appear when using
+  // conditional classes on the html tag.
+  if (is_null(drupal_get_http_header('X-UA-Compatible'))) {
+    drupal_add_http_header('X-UA-Compatible', 'IE=edge,chrome=1');
+  }
 
-	// Serialize RDF Namespaces into an RDFa 1.1 prefix attribute.
-	if ($variables ['rdf_namespaces']) {
-		$prefixes = array ();
-		foreach ( explode ( "\n  ", ltrim ( $variables ['rdf_namespaces'] ) ) as $namespace ) {
-			// Remove xlmns: and ending quote and fix prefix formatting.
-			$prefixes [] = str_replace ( '="', ': ', substr ( $namespace, 6, - 1 ) );
-		}
-		$variables ['rdf_namespaces'] = ' prefix="' . implode ( ' ', $prefixes ) . '"';
-	}
+  // Return early, so the maintenance page does not call any of the code below.
+  if ($hook != 'html') {
+    return;
+  }
 
-	// Classes for body element. Allows advanced theming based on context
-	// (home page, node of certain type, etc.)
-	if (! $variables ['is_front']) {
-		// Add unique class for each page.
-		$path = drupal_get_path_alias ( $_GET ['q'] );
-		// Add unique class for each website section.
-		list ( $section, ) = explode ( '/', $path, 2 );
-		$arg = explode ( '/', $_GET ['q'] );
-		if ($arg [0] == 'node' && isset ( $arg [1] )) {
-			if ($arg [1] == 'add') {
-				$section = 'node-add';
-			} elseif (isset ( $arg [2] ) && is_numeric ( $arg [1] ) && ($arg [2] == 'edit' || $arg [2] == 'delete')) {
-				$section = 'node-' . $arg [2];
-			}
-		}
-		$variables ['classes_array'] [] = drupal_html_class ( 'section-' . $section );
-	}
-	// Store the menu item since it has some useful information.
-	$variables ['menu_item'] = menu_get_item ();
-	if ($variables ['menu_item']) {
-		switch ($variables ['menu_item'] ['page_callback']) {
-			case 'views_page' :
-				// Is this a Views page?
-				$variables ['classes_array'] [] = 'page-views';
-				break;
-			case 'page_manager_blog' :
-			case 'page_manager_blog_user' :
-			case 'page_manager_contact_site' :
-			case 'page_manager_contact_user' :
-			case 'page_manager_node_add' :
-			case 'page_manager_node_edit' :
-			case 'page_manager_node_view_page' :
-			case 'page_manager_page_execute' :
-			case 'page_manager_poll' :
-			case 'page_manager_search_page' :
-			case 'page_manager_term_view_page' :
-			case 'page_manager_user_edit_page' :
-			case 'page_manager_user_view_page' :
-				// Is this a Panels page?
-				$variables ['classes_array'] [] = 'page-panels';
-				break;
-		}
-	}
+  // Serialize RDF Namespaces into an RDFa 1.1 prefix attribute.
+  if ($variables['rdf_namespaces']) {
+    $prefixes = array();
+    foreach (explode("\n  ", ltrim($variables['rdf_namespaces'])) as $namespace) {
+      // Remove xlmns: and ending quote and fix prefix formatting.
+      $prefixes[] = str_replace('="', ': ', substr($namespace, 6, -1));
+    }
+    $variables['rdf_namespaces'] = ' prefix="' . implode(' ', $prefixes) . '"';
+  }
+
+  // Classes for body element. Allows advanced theming based on context
+  // (home page, node of certain type, etc.)
+  if (!$variables['is_front']) {
+    // Add unique class for each page.
+    $path = drupal_get_path_alias($_GET['q']);
+    // Add unique class for each website section.
+    list($section, ) = explode('/', $path, 2);
+    $arg = explode('/', $_GET['q']);
+    if ($arg[0] == 'node' && isset($arg[1])) {
+      if ($arg[1] == 'add') {
+        $section = 'node-add';
+      }
+      elseif (isset($arg[2]) && is_numeric($arg[1]) && ($arg[2] == 'edit' || $arg[2] == 'delete')) {
+        $section = 'node-' . $arg[2];
+      }
+    }
+    $variables['classes_array'][] = drupal_html_class('section-' . $section);
+  }
+
+  // When Panels is used on a site, Drupal's sidebar body classes will be wrong,
+  // so override those with classes from a Panels layout preprocess.
+  // @see dp7vi_preprocess_dp7vi_main().
+  $panels_classes_array = &drupal_static('dp7vi_panels_classes_array', array());
+  if (!empty($panels_classes_array)) {
+    // Remove Drupal's sidebar classes.
+    $variables['classes_array'] = array_diff($variables['classes_array'], array('two-sidebars', 'one-sidebar sidebar-first', 'one-sidebar sidebar-second', 'no-sidebars'));
+    // Merge in the classes from the Panels layout.
+    $variables['classes_array'] = array_merge($variables['classes_array'], $panels_classes_array);
+  }
+
+  // Store the menu item since it has some useful information.
+  $variables['menu_item'] = menu_get_item();
+  if ($variables['menu_item']) {
+    switch ($variables['menu_item']['page_callback']) {
+      case 'views_page':
+        // Is this a Views page?
+        $variables['classes_array'][] = 'page-views';
+        break;
+      case 'page_manager_blog':
+      case 'page_manager_blog_user':
+      case 'page_manager_contact_site':
+      case 'page_manager_contact_user':
+      case 'page_manager_node_add':
+      case 'page_manager_node_edit':
+      case 'page_manager_node_view_page':
+      case 'page_manager_page_execute':
+      case 'page_manager_poll':
+      case 'page_manager_search_page':
+      case 'page_manager_term_view_page':
+      case 'page_manager_user_edit_page':
+      case 'page_manager_user_view_page':
+        // Is this a Panels page?
+        $variables['classes_array'][] = 'page-panels';
+        break;
+    }
+  }
 }
 
 /**
  * Override or insert variables into the html templates.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("html" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("html" in this case.)
  */
 function dp7vi_process_html(&$variables, $hook) {
-	// Flatten out html_attributes.
-	$variables ['html_attributes'] = drupal_attributes ( $variables ['html_attributes_array'] );
+  // Flatten out html_attributes.
+  $variables['html_attributes'] = drupal_attributes($variables['html_attributes_array']);
 }
 
 /**
  * Override or insert variables in the html_tag theme function.
  */
 function dp7vi_process_html_tag(&$variables) {
-	$tag = &$variables ['element'];
+  $tag = &$variables['element'];
 
-	if ($tag ['#tag'] == 'style' || $tag ['#tag'] == 'script') {
-		// Remove redundant type attribute and CDATA comments.
-		unset ( $tag ['#attributes'] ['type'], $tag ['#value_prefix'], $tag ['#value_suffix'] );
+  if ($tag['#tag'] == 'style' || $tag['#tag'] == 'script') {
+    // Remove redundant type attribute and CDATA comments.
+    unset($tag['#attributes']['type'], $tag['#value_prefix'], $tag['#value_suffix']);
 
-		// Remove media="all" but leave others unaffected.
-		if (isset ( $tag ['#attributes'] ['media'] ) && $tag ['#attributes'] ['media'] === 'all') {
-			unset ( $tag ['#attributes'] ['media'] );
-		}
-	}
+    // Remove media="all" but leave others unaffected.
+    if (isset($tag['#attributes']['media']) && $tag['#attributes']['media'] === 'all') {
+      unset($tag['#attributes']['media']);
+    }
+  }
 }
 
 /**
  * Implement hook_html_head_alter().
  */
 function dp7vi_html_head_alter(&$head) {
-	// Simplify the meta tag for character encoding.
-	if (isset ( $head ['system_meta_content_type'] ['#attributes'] ['content'] )) {
-		$head ['system_meta_content_type'] ['#attributes'] = array (
-				'charset' => str_replace ( 'text/html; charset=', '', $head ['system_meta_content_type'] ['#attributes'] ['content'] )
-		);
-	}
+  // Simplify the meta tag for character encoding.
+  if (isset($head['system_meta_content_type']['#attributes']['content'])) {
+    $head['system_meta_content_type']['#attributes'] = array('charset' => str_replace('text/html; charset=', '', $head['system_meta_content_type']['#attributes']['content']));
+  }
 }
 
 /**
  * Override or insert variables into the page template.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("page" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("page" in this case.)
  */
 function dp7vi_preprocess_page(&$variables, $hook) {
-	// Find the title of the menu used by the secondary links.
-	$secondary_links = variable_get ( 'menu_secondary_links_source', 'user-menu' );
-	if ($secondary_links) {
-		$menus = function_exists ( 'menu_get_menus' ) ? menu_get_menus () : menu_list_system_menus ();
-		$variables ['secondary_menu_heading'] = $menus [$secondary_links];
-	} else {
-		$variables ['secondary_menu_heading'] = '';
-	}
+  // Find the title of the menu used by the secondary links.
+  $secondary_links = variable_get('menu_secondary_links_source', 'user-menu');
+  if ($secondary_links) {
+    $menus = function_exists('menu_get_menus') ? menu_get_menus() : menu_list_system_menus();
+    $variables['secondary_menu_heading'] = $menus[$secondary_links];
+  }
+  else {
+    $variables['secondary_menu_heading'] = '';
+  }
 }
 
 /**
  * Override or insert variables into the maintenance page template.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("maintenance_page" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("maintenance_page" in this case.)
  */
 function dp7vi_preprocess_maintenance_page(&$variables, $hook) {
-	dp7vi_preprocess_html ( $variables, $hook );
-	// There's nothing maintenance-related in dp7vi_preprocess_page(). Yet.
-	// dp7vi_preprocess_page($variables, $hook);
+  dp7vi_preprocess_html($variables, $hook);
+  // There's nothing maintenance-related in dp7vi_preprocess_page(). Yet.
+  //dp7vi_preprocess_page($variables, $hook);
 }
 
 /**
  * Override or insert variables into the maintenance page template.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("maintenance_page" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("maintenance_page" in this case.)
  */
 function dp7vi_process_maintenance_page(&$variables, $hook) {
-	dp7vi_process_html ( $variables, $hook );
-	// Ensure default regions get a variable. Theme authors often forget to remove
-	// a deleted region's variable in maintenance-page.tpl.
-	foreach ( array (
-			'header',
-			'navigation',
-			'highlighted',
-			'help',
-			'content',
-			'sidebar_first',
-			'sidebar_second',
-			'footer',
-			'bottom'
-	) as $region ) {
-		if (! isset ( $variables [$region] )) {
-			$variables [$region] = '';
-		}
-	}
+  dp7vi_process_html($variables, $hook);
+  // Ensure default regions get a variable. Theme authors often forget to remove
+  // a deleted region's variable in maintenance-page.tpl.
+  foreach (array('header', 'navigation', 'highlighted', 'help', 'content', 'sidebar_first', 'sidebar_second', 'footer', 'bottom') as $region) {
+    if (!isset($variables[$region])) {
+      $variables[$region] = '';
+    }
+  }
 }
 
 /**
  * Override or insert variables into the node templates.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("node" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("node" in this case.)
  */
 function dp7vi_preprocess_node(&$variables, $hook) {
-	// Add $unpublished variable.
-	$variables ['unpublished'] = (! $variables ['status']) ? TRUE : FALSE;
+  // Add $unpublished variable.
+  $variables['unpublished'] = (!$variables['status']) ? TRUE : FALSE;
 
-	// Add pubdate to submitted variable.
-	$variables ['pubdate'] = '<time pubdate datetime="' . format_date ( $variables ['node']->created, 'custom', 'c' ) . '">' . $variables ['date'] . '</time>';
-	if ($variables ['display_submitted']) {
-		$variables ['submitted'] = t ( 'Submitted by !username on !datetime', array (
-				'!username' => $variables ['name'],
-				'!datetime' => $variables ['pubdate']
-		) );
-	}
+  // Add pubdate to submitted variable.
+  $variables['pubdate'] = '<time pubdate datetime="' . format_date($variables['node']->created, 'custom', 'c') . '">' . $variables['date'] . '</time>';
+  if ($variables['display_submitted']) {
+    $variables['submitted'] = t('Submitted by !username on !datetime', array('!username' => $variables['name'], '!datetime' => $variables['pubdate']));
+  }
 
-	// Add a class for the view mode.
-	if (! $variables ['teaser']) {
-		$variables ['classes_array'] [] = 'view-mode-' . $variables ['view_mode'];
-	}
+  // If the node is unpublished, add the "unpublished" watermark class.
+  if ($variables['unpublished']) {
+    $variables['classes_array'][] = 'watermark__wrapper';
+  }
 
-	// Add a class to show node is authored by current user.
-	if ($variables ['uid'] && $variables ['uid'] == $GLOBALS ['user']->uid) {
-		$variables ['classes_array'] [] = 'node-by-viewer';
-	}
+  // Add a class for the view mode.
+  if (!$variables['teaser']) {
+    $variables['classes_array'][] = 'view-mode-' . $variables['view_mode'];
+  }
 
-	$variables ['title_attributes_array'] ['class'] [] = 'node__title';
-	$variables ['title_attributes_array'] ['class'] [] = 'node-title';
+  // Add a class to show node is authored by current user.
+  if ($variables['uid'] && $variables['uid'] == $GLOBALS['user']->uid) {
+    $variables['classes_array'][] = 'node-by-viewer';
+  }
+
+  $variables['title_attributes_array']['class'][] = 'node__title';
 }
 
 /**
  * Override or insert variables into the comment templates.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("comment" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("comment" in this case.)
  */
 function dp7vi_preprocess_comment(&$variables, $hook) {
-	// If comment subjects are disabled, don't display them.
-	if (variable_get ( 'comment_subject_field_' . $variables ['node']->type, 1 ) == 0) {
-		$variables ['title'] = '';
-	}
+  // If comment subjects are disabled, don't display them.
+  if (variable_get('comment_subject_field_' . $variables['node']->type, 1) == 0) {
+    $variables['title'] = '';
+  }
 
-	// Add pubdate to submitted variable.
-	$variables ['pubdate'] = '<time pubdate datetime="' . format_date ( $variables ['comment']->created, 'custom', 'c' ) . '">' . $variables ['created'] . '</time>';
-	$variables ['submitted'] = t ( '!username replied on !datetime', array (
-			'!username' => $variables ['author'],
-			'!datetime' => $variables ['pubdate']
-	) );
+  // Add pubdate to submitted variable.
+  $variables['pubdate'] = '<time pubdate datetime="' . format_date($variables['comment']->created, 'custom', 'c') . '">' . $variables['created'] . '</time>';
+  $variables['submitted'] = t('!username replied on !datetime', array('!username' => $variables['author'], '!datetime' => $variables['pubdate']));
 
-	// Zebra striping.
-	if ($variables ['id'] == 1) {
-		$variables ['classes_array'] [] = 'first';
-	}
-	if ($variables ['id'] == $variables ['node']->comment_count) {
-		$variables ['classes_array'] [] = 'last';
-	}
-	$variables ['classes_array'] [] = $variables ['zebra'];
+  // If the comment is unpublished, add the "unpublished" watermark class.
+  if ($variables['status'] == 'comment-unpublished') {
+    $variables['classes_array'][] = 'watermark__wrapper';
+  }
 
-	$variables ['title_attributes_array'] ['class'] [] = 'comment__title';
-	$variables ['title_attributes_array'] ['class'] [] = 'comment-title';
+  // Zebra striping.
+  if ($variables['id'] == 1) {
+    $variables['classes_array'][] = 'first';
+  }
+  if ($variables['id'] == $variables['node']->comment_count) {
+    $variables['classes_array'][] = 'last';
+  }
+  $variables['classes_array'][] = $variables['zebra'];
+
+  $variables['title_attributes_array']['class'][] = 'comment__title';
 }
 
 /**
  * Preprocess variables for region.tpl.php
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("region" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("region" in this case.)
  */
 function dp7vi_preprocess_region(&$variables, $hook) {
-	// Sidebar regions get some extra classes and a common template suggestion.
-	if (strpos ( $variables ['region'], 'sidebar_' ) === 0) {
-		$variables ['classes_array'] [] = 'column';
-		$variables ['classes_array'] [] = 'sidebar';
-		// Allow a region-specific template to override dp7vi's region--sidebar.
-		array_unshift ( $variables ['theme_hook_suggestions'], 'region__sidebar' );
-	}	// Use a template with no wrapper for the content region.
-	elseif ($variables ['region'] == 'content') {
-		// Allow a region-specific template to override dp7vi's region--no-wrapper.
-		array_unshift ( $variables ['theme_hook_suggestions'], 'region__no_wrapper' );
-	}	// Add a SMACSS-style class for header region.
-	elseif ($variables ['region'] == 'header') {
-		array_unshift ( $variables ['classes_array'], 'header__region' );
-	}
+  // Sidebar regions get some extra classes and a common template suggestion.
+  if (strpos($variables['region'], 'sidebar_') === 0) {
+    $variables['classes_array'][] = 'column';
+    $variables['classes_array'][] = 'sidebar';
+    // Allow a region-specific template to override dp7vi's region--sidebar.
+    array_unshift($variables['theme_hook_suggestions'], 'region__sidebar');
+  }
+  // Use a template with no wrapper for the content region.
+  elseif ($variables['region'] == 'content') {
+    // Allow a region-specific template to override dp7vi's region--no-wrapper.
+    array_unshift($variables['theme_hook_suggestions'], 'region__no_wrapper');
+  }
+  // Add a SMACSS-style class for header region.
+  elseif ($variables['region'] == 'header') {
+    array_unshift($variables['classes_array'], 'header__region');
+  }
 }
 
 /**
  * Override or insert variables into the block templates.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("block" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("block" in this case.)
  */
 function dp7vi_preprocess_block(&$variables, $hook) {
-	// Use a template with no wrapper for the page's main content.
-	if ($variables ['block_html_id'] == 'block-system-main') {
-		$variables ['theme_hook_suggestions'] [] = 'block__no_wrapper';
-	}
+  // Use a template with no wrapper for the page's main content.
+  if ($variables['block_html_id'] == 'block-system-main') {
+    $variables['theme_hook_suggestions'][] = 'block__no_wrapper';
+  }
 
-	// Classes describing the position of the block within the region.
-	if ($variables ['block_id'] == 1) {
-		$variables ['classes_array'] [] = 'first';
-	}
-	// The last_in_region property is set in dp7vi_page_alter().
-	if (isset ( $variables ['block']->last_in_region )) {
-		$variables ['classes_array'] [] = 'last';
-	}
-	$variables ['classes_array'] [] = $variables ['block_zebra'];
+  // Classes describing the position of the block within the region.
+  if ($variables['block_id'] == 1) {
+    $variables['classes_array'][] = 'first';
+  }
+  // The last_in_region property is set in dp7vi_page_alter().
+  if (isset($variables['block']->last_in_region)) {
+    $variables['classes_array'][] = 'last';
+  }
+  $variables['classes_array'][] = $variables['block_zebra'];
 
-	$variables ['title_attributes_array'] ['class'] [] = 'block__title';
-	$variables ['title_attributes_array'] ['class'] [] = 'block-title';
+  $variables['title_attributes_array']['class'][] = 'block__title';
 
-	// Add Aria Roles via attributes.
-	switch ($variables ['block']->module) {
-		case 'system' :
-			switch ($variables ['block']->delta) {
-				case 'main' :
-					// Note: the "main" role goes in the page.tpl, not here.
-					break;
-				case 'help' :
-				case 'powered-by' :
-					$variables ['attributes_array'] ['role'] = 'complementary';
-					break;
-				default :
-					// Any other "system" block is a menu block.
-					$variables ['attributes_array'] ['role'] = 'navigation';
-					break;
-			}
-			break;
-		case 'menu' :
-		case 'menu_block' :
-		case 'blog' :
-		case 'book' :
-		case 'comment' :
-		case 'forum' :
-		case 'shortcut' :
-		case 'statistics' :
-			$variables ['attributes_array'] ['role'] = 'navigation';
-			break;
-		case 'search' :
-			$variables ['attributes_array'] ['role'] = 'search';
-			break;
-		case 'help' :
-		case 'aggregator' :
-		case 'locale' :
-		case 'poll' :
-		case 'profile' :
-			$variables ['attributes_array'] ['role'] = 'complementary';
-			break;
-		case 'node' :
-			switch ($variables ['block']->delta) {
-				case 'syndicate' :
-					$variables ['attributes_array'] ['role'] = 'complementary';
-					break;
-				case 'recent' :
-					$variables ['attributes_array'] ['role'] = 'navigation';
-					break;
-			}
-			break;
-		case 'user' :
-			switch ($variables ['block']->delta) {
-				case 'login' :
-					$variables ['attributes_array'] ['role'] = 'form';
-					break;
-				case 'new' :
-				case 'online' :
-					$variables ['attributes_array'] ['role'] = 'complementary';
-					break;
-			}
-			break;
-	}
+  // Add Aria Roles via attributes.
+  switch ($variables['block']->module) {
+    case 'system':
+      switch ($variables['block']->delta) {
+        case 'main':
+          // Note: the "main" role goes in the page.tpl, not here.
+          break;
+        case 'help':
+        case 'powered-by':
+          $variables['attributes_array']['role'] = 'complementary';
+          break;
+        default:
+          // Any other "system" block is a menu block.
+          $variables['attributes_array']['role'] = 'navigation';
+          break;
+      }
+      break;
+    case 'menu':
+    case 'menu_block':
+    case 'blog':
+    case 'book':
+    case 'comment':
+    case 'forum':
+    case 'shortcut':
+    case 'statistics':
+      $variables['attributes_array']['role'] = 'navigation';
+      break;
+    case 'search':
+      $variables['attributes_array']['role'] = 'search';
+      break;
+    case 'help':
+    case 'aggregator':
+    case 'locale':
+    case 'poll':
+    case 'profile':
+      $variables['attributes_array']['role'] = 'complementary';
+      break;
+    case 'node':
+      switch ($variables['block']->delta) {
+        case 'syndicate':
+          $variables['attributes_array']['role'] = 'complementary';
+          break;
+        case 'recent':
+          $variables['attributes_array']['role'] = 'navigation';
+          break;
+      }
+      break;
+    case 'user':
+      switch ($variables['block']->delta) {
+        case 'login':
+          $variables['attributes_array']['role'] = 'form';
+          break;
+        case 'new':
+        case 'online':
+          $variables['attributes_array']['role'] = 'complementary';
+          break;
+      }
+      break;
+  }
 }
 
 /**
  * Override or insert variables into the block templates.
  *
- * @param $variables An
- *        	array of variables to pass to the theme template.
- * @param $hook The
- *        	name of the template being rendered ("block" in this case.)
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("block" in this case.)
  */
 function dp7vi_process_block(&$variables, $hook) {
-	// Drupal 7 should use a $title variable instead of $block->subject.
-	$variables ['title'] = isset ( $variables ['block']->subject ) ? $variables ['block']->subject : '';
+  // Drupal 7 should use a $title variable instead of $block->subject.
+  $variables['title'] = isset($variables['block']->subject) ? $variables['block']->subject : '';
 }
 
 /**
@@ -466,23 +445,23 @@ function dp7vi_process_block(&$variables, $hook) {
  * Look for the last block in the region. This is impossible to determine from
  * within a preprocess_block function.
  *
- * @param $page Nested
- *        	array of renderable elements that make up the page.
+ * @param $page
+ *   Nested array of renderable elements that make up the page.
  */
 function dp7vi_page_alter(&$page) {
-	// Look in each visible region for blocks.
-	foreach ( system_region_list ( $GLOBALS ['theme'], REGIONS_VISIBLE ) as $region => $name ) {
-		if (! empty ( $page [$region] )) {
-			// Find the last block in the region.
-			$blocks = array_reverse ( element_children ( $page [$region] ) );
-			while ( $blocks && ! isset ( $page [$region] [$blocks [0]] ['#block'] ) ) {
-				array_shift ( $blocks );
-			}
-			if ($blocks) {
-				$page [$region] [$blocks [0]] ['#block']->last_in_region = TRUE;
-			}
-		}
-	}
+  // Look in each visible region for blocks.
+  foreach (system_region_list($GLOBALS['theme'], REGIONS_VISIBLE) as $region => $name) {
+    if (!empty($page[$region])) {
+      // Find the last block in the region.
+      $blocks = array_reverse(element_children($page[$region]));
+      while ($blocks && !isset($page[$region][$blocks[0]]['#block'])) {
+        array_shift($blocks);
+      }
+      if ($blocks) {
+        $page[$region][$blocks[0]]['#block']->last_in_region = TRUE;
+      }
+    }
+  }
 }
 
 /**
@@ -492,20 +471,20 @@ function dp7vi_page_alter(&$page) {
  * renaming the classes on the node edit form's field wrappers.
  */
 function dp7vi_form_node_form_alter(&$form, &$form_state, $form_id) {
-	// Remove if #1245218 is backported to D7 core.
-	foreach ( array_keys ( $form ) as $item ) {
-		if (strpos ( $item, 'field_' ) === 0) {
-			if (! empty ( $form [$item] ['#attributes'] ['class'] )) {
-				foreach ( $form [$item] ['#attributes'] ['class'] as &$class ) {
-					// Core bug: the field-type-text-with-summary class is used as a JS hook.
-					if ($class != 'field-type-text-with-summary' && strpos ( $class, 'field-type-' ) === 0 || strpos ( $class, 'field-name-' ) === 0) {
-						// Make the class different from that used in theme_field().
-						$class = 'form-' . $class;
-					}
-				}
-			}
-		}
-	}
+  // Remove if #1245218 is backported to D7 core.
+  foreach (array_keys($form) as $item) {
+    if (strpos($item, 'field_') === 0) {
+      if (!empty($form[$item]['#attributes']['class'])) {
+        foreach ($form[$item]['#attributes']['class'] as &$class) {
+          // Core bug: the field-type-text-with-summary class is used as a JS hook.
+          if ($class != 'field-type-text-with-summary' && strpos($class, 'field-type-') === 0 || strpos($class, 'field-name-') === 0) {
+            // Make the class different from that used in theme_field().
+            $class = 'form-' . $class;
+          }
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -514,39 +493,33 @@ function dp7vi_form_node_form_alter(&$form, &$form_state, $form_id) {
  * @ingroup themeable
  */
 function dp7vi_menu_local_tasks(&$variables) {
-	$output = '';
+  $output = '';
 
-	// Add theme hook suggestions for tab type.
-	foreach ( array (
-			'primary',
-			'secondary'
-	) as $type ) {
-		if (! empty ( $variables [$type] )) {
-			foreach ( array_keys ( $variables [$type] ) as $key ) {
-				if (isset ( $variables [$type] [$key] ['#theme'] ) && ($variables [$type] [$key] ['#theme'] == 'menu_local_task' || is_array ( $variables [$type] [$key] ['#theme'] ) && in_array ( 'menu_local_task', $variables [$type] [$key] ['#theme'] ))) {
-					$variables [$type] [$key] ['#theme'] = array (
-							'menu_local_task__' . $type,
-							'menu_local_task'
-					);
-				}
-			}
-		}
-	}
+  // Add theme hook suggestions for tab type.
+  foreach (array('primary', 'secondary') as $type) {
+    if (!empty($variables[$type])) {
+      foreach (array_keys($variables[$type]) as $key) {
+        if (isset($variables[$type][$key]['#theme']) && ($variables[$type][$key]['#theme'] == 'menu_local_task' || is_array($variables[$type][$key]['#theme']) && in_array('menu_local_task', $variables[$type][$key]['#theme']))) {
+          $variables[$type][$key]['#theme'] = array('menu_local_task__' . $type, 'menu_local_task');
+        }
+      }
+    }
+  }
 
-	if (! empty ( $variables ['primary'] )) {
-		$variables ['primary'] ['#prefix'] = '<h2 class="element-invisible">' . t ( 'Primary tabs' ) . '</h2>';
-		$variables ['primary'] ['#prefix'] .= '<ul class="tabs-primary tabs primary">';
-		$variables ['primary'] ['#suffix'] = '</ul>';
-		$output .= drupal_render ( $variables ['primary'] );
-	}
-	if (! empty ( $variables ['secondary'] )) {
-		$variables ['secondary'] ['#prefix'] = '<h2 class="element-invisible">' . t ( 'Secondary tabs' ) . '</h2>';
-		$variables ['secondary'] ['#prefix'] .= '<ul class="tabs-secondary tabs secondary">';
-		$variables ['secondary'] ['#suffix'] = '</ul>';
-		$output .= drupal_render ( $variables ['secondary'] );
-	}
+  if (!empty($variables['primary'])) {
+    $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
+    $variables['primary']['#prefix'] .= '<ul class="tabs-primary tabs primary">';
+    $variables['primary']['#suffix'] = '</ul>';
+    $output .= drupal_render($variables['primary']);
+  }
+  if (!empty($variables['secondary'])) {
+    $variables['secondary']['#prefix'] = '<h2 class="element-invisible">' . t('Secondary tabs') . '</h2>';
+    $variables['secondary']['#prefix'] .= '<ul class="tabs-secondary tabs secondary">';
+    $variables['secondary']['#suffix'] = '</ul>';
+    $output .= drupal_render($variables['secondary']);
+  }
 
-	return $output;
+  return $output;
 }
 
 /**
@@ -555,138 +528,316 @@ function dp7vi_menu_local_tasks(&$variables) {
  * @ingroup themeable
  */
 function dp7vi_menu_local_task($variables) {
-	$type = $class = FALSE;
+  $type = $class = FALSE;
 
-	$link = $variables ['element'] ['#link'];
-	$link_text = $link ['title'];
+  $link = $variables['element']['#link'];
+  $link_text = $link['title'];
 
-	// Check for tab type set in dp7vi_menu_local_tasks().
-	if (is_array ( $variables ['element'] ['#theme'] )) {
-		$type = in_array ( 'menu_local_task__secondary', $variables ['element'] ['#theme'] ) ? 'tabs-secondary' : 'tabs-primary';
-	}
+  // Check for tab type set in dp7vi_menu_local_tasks().
+  if (is_array($variables['element']['#theme'])) {
+    $type = in_array('menu_local_task__secondary', $variables['element']['#theme']) ? 'tabs-secondary' : 'tabs-primary';
+  }
 
-	// Add SMACSS-style class names.
-	if ($type) {
-		$link ['localized_options'] ['attributes'] ['class'] [] = $type . '__tab-link';
-		$class = $type . '__tab';
-	}
+  // Add SMACSS-style class names.
+  if ($type) {
+    $link['localized_options']['attributes']['class'][] = $type . '__tab-link';
+    $class = $type . '__tab';
+  }
 
-	if (! empty ( $variables ['element'] ['#active'] )) {
-		// Add text to indicate active tab for non-visual users.
-		$active = ' <span class="element-invisible">' . t ( '(active tab)' ) . '</span>';
+  if (!empty($variables['element']['#active'])) {
+    // Add text to indicate active tab for non-visual users.
+    $active = ' <span class="element-invisible">' . t('(active tab)') . '</span>';
 
-		// If the link does not contain HTML already, check_plain() it now.
-		// After we set 'html'=TRUE the link will not be sanitized by l().
-		if (empty ( $link ['localized_options'] ['html'] )) {
-			$link ['title'] = check_plain ( $link ['title'] );
-		}
-		$link ['localized_options'] ['html'] = TRUE;
-		$link_text = t ( '!local-task-title!active', array (
-				'!local-task-title' => $link ['title'],
-				'!active' => $active
-		) );
+    // If the link does not contain HTML already, check_plain() it now.
+    // After we set 'html'=TRUE the link will not be sanitized by l().
+    if (empty($link['localized_options']['html'])) {
+      $link['title'] = check_plain($link['title']);
+    }
+    $link['localized_options']['html'] = TRUE;
+    $link_text = t('!local-task-title!active', array('!local-task-title' => $link['title'], '!active' => $active));
 
-		if (! $type) {
-			$class = 'active';
-		} else {
-			$link ['localized_options'] ['attributes'] ['class'] [] = 'is-active';
-			$class .= ' is-active';
-		}
-	}
+    if (!$type) {
+      $class = 'active';
+    }
+    else {
+      $link['localized_options']['attributes']['class'][] = 'is-active';
+      $class .= ' is-active';
+    }
+  }
 
-	return '<li' . ($class ? ' class="' . $class . '"' : '') . '>' . l ( $link_text, $link ['href'], $link ['localized_options'] ) . "</li>\n";
+  return '<li' . ($class ? ' class="' . $class . '"' : '') . '>' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
 }
 
 /**
  * Implements hook_preprocess_menu_link().
  */
 function dp7vi_preprocess_menu_link(&$variables, $hook) {
-	foreach ( $variables ['element'] ['#attributes'] ['class'] as $key => $class ) {
-		switch ($class) {
-			// Menu module classes.
-			case 'expanded' :
-			case 'collapsed' :
-			case 'leaf' :
-			case 'active' :
-			// Menu block module classes.
-			case 'active-trail' :
-				array_unshift ( $variables ['element'] ['#attributes'] ['class'], 'is-' . $class );
-				break;
-			case 'has-children' :
-				array_unshift ( $variables ['element'] ['#attributes'] ['class'], 'is-parent' );
-				break;
-		}
-	}
-	array_unshift ( $variables ['element'] ['#attributes'] ['class'], 'menu__item' );
-	if (empty ( $variables ['element'] ['#localized_options'] ['attributes'] ['class'] )) {
-		$variables ['element'] ['#localized_options'] ['attributes'] ['class'] = array ();
-	} else {
-		foreach ( $variables ['element'] ['#localized_options'] ['attributes'] ['class'] as $key => $class ) {
-			switch ($class) {
-				case 'active' :
-				case 'active-trail' :
-					array_unshift ( $variables ['element'] ['#localized_options'] ['attributes'] ['class'], 'is-' . $class );
-					break;
-			}
-		}
-	}
-	array_unshift ( $variables ['element'] ['#localized_options'] ['attributes'] ['class'], 'menu__link' );
+  foreach ($variables['element']['#attributes']['class'] as $key => $class) {
+    switch ($class) {
+      // Menu module classes.
+      case 'expanded':
+      case 'collapsed':
+      case 'leaf':
+      case 'active':
+      // Menu block module classes.
+      case 'active-trail':
+        array_unshift($variables['element']['#attributes']['class'], 'is-' . $class);
+        break;
+      case 'has-children':
+        array_unshift($variables['element']['#attributes']['class'], 'is-parent');
+        break;
+    }
+  }
+  array_unshift($variables['element']['#attributes']['class'], 'menu__item');
+  if (empty($variables['element']['#localized_options']['attributes']['class'])) {
+    $variables['element']['#localized_options']['attributes']['class'] = array();
+  }
+  else {
+    foreach ($variables['element']['#localized_options']['attributes']['class'] as $key => $class) {
+      switch ($class) {
+        case 'active':
+        case 'active-trail':
+          array_unshift($variables['element']['#localized_options']['attributes']['class'], 'is-' . $class);
+          break;
+      }
+    }
+  }
+  array_unshift($variables['element']['#localized_options']['attributes']['class'], 'menu__link');
 }
 
 /**
  * Returns HTML for status and/or error messages, grouped by type.
- * Using Bootstrap style.
  */
 function dp7vi_status_messages($variables) {
-	$display = $variables ['display'];
-	$output = '';
+  $display = $variables['display'];
+  $output = '';
 
-	$status_heading = array (
-			'status' => t ( 'Status message' ),
-			'error' => t ( 'Error message' ),
-			'warning' => t ( 'Warning message' )
-	);
-	$status_class = array (
-			'status' => 'info',
-			'error' => 'danger',
-			'warning' => 'warning'
-	);
-	foreach ( drupal_get_messages ( $display ) as $type => $messages ) {
-		$class = 'alert alert-' . $status_class [$type];
-		$output .= "<div class=\"$class\">\n";
-		if (! empty ( $status_heading [$type] )) {
-			$output .= '<h2 class="element-invisible">' . $status_heading [$type] . "</h2>\n";
-		}
-		if (count ( $messages ) > 1) {
-			$output .= " <ul class=\"list-unstyled\">\n";
-			foreach ( $messages as $message ) {
-				$output .= '  <li>' . $message . "</li>\n";
-			}
-			$output .= " </ul>\n";
-		} else {
-			$output .= $messages [0];
-		}
-		$output .= "</div>\n";
-	}
-	return $output;
+  $status_heading = array(
+    'status' => t('Status message'),
+    'error' => t('Error message'),
+    'warning' => t('Warning message'),
+  );
+  foreach (drupal_get_messages($display) as $type => $messages) {
+    $output .= "<div class=\"messages--$type messages $type\">\n";
+    if (!empty($status_heading[$type])) {
+      $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
+    }
+    if (count($messages) > 1) {
+      $output .= " <ul class=\"messages__list\">\n";
+      foreach ($messages as $message) {
+        $output .= '  <li class=\"messages__item\">' . $message . "</li>\n";
+      }
+      $output .= " </ul>\n";
+    }
+    else {
+      $output .= $messages[0];
+    }
+    $output .= "</div>\n";
+  }
+  return $output;
 }
 
 /**
  * Returns HTML for a marker for new or updated content.
  */
 function dp7vi_mark($variables) {
-	$type = $variables ['type'];
+  $type = $variables['type'];
 
-	if ($type == MARK_NEW) {
-		return ' <mark class="new">' . t ( 'new' ) . '</mark>';
-	} elseif ($type == MARK_UPDATED) {
-		return ' <mark class="updated">' . t ( 'updated' ) . '</mark>';
-	}
+  if ($type == MARK_NEW) {
+    return ' <mark class="new">' . t('new') . '</mark>';
+  }
+  elseif ($type == MARK_UPDATED) {
+    return ' <mark class="updated">' . t('updated') . '</mark>';
+  }
 }
 
 /**
  * Alters the default Panels render callback so it removes the panel separator.
  */
 function dp7vi_panels_default_style_render_region($variables) {
-	return implode ( '', $variables ['panes'] );
+  return implode('', $variables['panes']);
 }
+
+/**
+ * Override or insert variables into the panels-pane templates.
+ *
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ * @param $hook
+ *   The name of the template being rendered ("block" in this case.)
+ */
+function dp7vi_preprocess_panels_pane(&$variables, $hook) {
+  // Use no pane wrapper for common page elements.
+  switch ($variables['pane']->subtype) {
+    case 'page_content':
+    case 'pane_header':
+    case 'pane_messages':
+    case 'pane_navigation':
+      // Allow a pane-specific template to override dp7vi's suggestion.
+      array_unshift($variables['theme_hook_suggestions'], 'panels_pane__no_wrapper');
+      break;
+  }
+  // Add component-style class name to pane title.
+  $variables['title_attributes_array']['class'][] = 'pane__title';
+}
+
+/**
+* Customize the markup of pager
+**/
+function dp7vi_pager($variables) {
+  $output = "";
+  $tags = $variables['tags'];
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+  $quantity = $variables['quantity'];
+  global $pager_page_array, $pager_total;
+  // Calculate various markers within this pager piece:
+  $pager_middle = ceil($quantity / 2);
+  $pager_current = $pager_page_array[$element] + 1;
+  $pager_first = $pager_current - $pager_middle + 1;
+  $pager_last = $pager_current + $quantity - $pager_middle;
+  $pager_max = $pager_total[$element];
+  // End of marker calculations.
+
+  // Prepare for generation loop.
+  $i = $pager_first;
+  if ($pager_last > $pager_max) {
+    $i = $i + ($pager_max - $pager_last);
+    $pager_last = $pager_max;
+  }
+  if ($i <= 0) {
+    $pager_last = $pager_last + (1 - $i);
+    $i = 1;
+  }
+  // End of generation loop preparation.
+
+  $li_first = theme('pager_first', array('text' => (isset($tags[0]) ? $tags[0] : t('&laquo;&laquo;')), 'element' => $element, 'parameters' => $parameters));
+  $li_previous = theme('pager_previous', array('text' => (isset($tags[1]) ? $tags[1] : t('&laquo;')), 'element' => $element, 'interval' => 1, 'parameters' => $parameters));
+  $li_next = theme('pager_next', array('text' => (isset($tags[3]) ? $tags[3] : t('&raquo;')), 'element' => $element, 'interval' => 1, 'parameters' => $parameters));
+  $li_last = theme('pager_last', array('text' => (isset($tags[4]) ? $tags[4] : t('&raquo;&raquo;')), 'element' => $element, 'parameters' => $parameters));
+
+  if ($pager_total[$element] > 1) {
+    if ($li_previous) {
+      $items[] = array(
+        'class' => array('prev'),
+        'data' => $li_previous,
+      );
+    }
+
+    // When there is more than one page, create the pager list.
+    if ($i != $pager_max) {
+      if ($i > 1) {
+        $items[] = array(
+          'class' => array('pager-ellipsis', 'disabled'),
+          'data' => '<span>…</span>',
+        );
+      }
+      // Now generate the actual pager piece.
+      for (; $i <= $pager_last && $i <= $pager_max; $i++) {
+        if ($i < $pager_current) {
+          $items[] = array(
+           // 'class' => array('pager-item'),
+            'data' => theme('pager_previous', array('text' => $i, 'element' => $element, 'interval' => ($pager_current - $i), 'parameters' => $parameters)),
+          );
+        }
+        if ($i == $pager_current) {
+          $items[] = array(
+            'class' => array('active'), // Add the active class
+            'data' => l($i, '#', array('fragment' => '','external' => TRUE)),
+          );
+        }
+        if ($i > $pager_current) {
+          $items[] = array(
+            //'class' => array('pager-item'),
+            'data' => theme('pager_next', array('text' => $i, 'element' => $element, 'interval' => ($i - $pager_current), 'parameters' => $parameters)),
+          );
+        }
+      }
+      if ($i < $pager_max) {
+        $items[] = array(
+          'class' => array('pager-ellipsis', 'disabled'),
+          'data' => '<span>…</span>',
+        );
+      }
+    }
+    // End generation.
+    if ($li_next) {
+      $items[] = array(
+        'class' => array('next'),
+        'data' => $li_next,
+      );
+    }
+
+    return theme('item_list', array(
+      'items' => $items,
+      'attributes' => array('class' => array('pagination')),
+    )) ;
+  }
+  
+  return $output;
+}
+
+/** 
+* Customize the mini pager for views
+**/
+function dp7vi_views_mini_pager($vars) {
+  global $pager_page_array, $pager_total;
+
+  $tags = $vars['tags'];
+  $element = $vars['element'];
+  $parameters = $vars['parameters'];
+
+  // current is the page we are currently paged to
+  $pager_current = $pager_page_array[$element] + 1;
+  // max is the maximum page number
+  $pager_max = $pager_total[$element];
+  // End of marker calculations.
+
+  if ($pager_total[$element] > 1) {
+
+    $li_previous = theme('pager_previous',
+      array(
+        'text' => (isset($tags[1]) ? $tags[1] : t('&laquo;')),
+        'element' => $element,
+        'interval' => 1,
+        'parameters' => $parameters,
+      )
+    );
+    if (empty($li_previous)) {
+      $li_previous = "<li class=\"previous disabled\"><span>&laquo;</span></li>";
+    }
+    $li_next = theme('pager_next',
+      array(
+        'text' => (isset($tags[3]) ? $tags[3] : t('&raquo;')),
+        'element' => $element,
+        'interval' => 1,
+        'parameters' => $parameters,
+      )
+    );
+    if (empty($li_next)) {
+      $li_next = "<li class=\"next disabled\"><span>&raquo;</span></li>";
+    }
+    $items[] = array(
+      'class' => array('previous'),
+      'data' => $li_previous,
+    );
+    $items[] = array(
+      'class' => array('current'),
+      'data' => t('<span>@current of @max</span>', array('@current' => $pager_current, '@max' => $pager_max)),
+    );
+
+    $items[] = array(
+      'class' => array('next'),
+      'data' => $li_next,
+    );
+    return theme('item_list',
+      array(
+        'items' => $items,
+        'title' => NULL,
+        'type' => 'ul',
+        'attributes' => array('class' => array('pager')),
+      )
+    );
+  }
+}
+
