@@ -10,6 +10,24 @@
  * See the online documentation for more information:
  *   https://drupal.org/documentation/theme/dp7vi
  */
+// Provide < PHP 5.3 support for the __DIR__ constant.
+if (!defined('__DIR__')) {
+	define('__DIR__', dirname(__FILE__));
+}
+require_once __DIR__ . '/includes/bootstrap.inc';
+require_once __DIR__ . '/includes/theme.inc';
+require_once __DIR__ . '/includes/pager.inc';
+require_once __DIR__ . '/includes/form.inc';
+require_once __DIR__ . '/includes/admin.inc';
+require_once __DIR__ . '/includes/menu.inc';
+
+// Load module specific files in the modules directory.
+$includes = file_scan_directory(__DIR__ . '/includes/modules', '/\.inc$/');
+foreach ($includes as $include) {
+	if (module_exists($include->name)) {
+		require_once $include->uri;
+	}
+}
 // @TODO: Turn this off on production mode.
 // Rebuild .info data.
 system_rebuild_theme_data ();
@@ -512,7 +530,6 @@ function dp7vi_form_node_form_alter(&$form, &$form_state, $form_id) {
  * Returns HTML for primary and secondary local tasks.
  *
  * @ingroup themeable
- */
 function dp7vi_menu_local_tasks(&$variables) {
 	$output = '';
 
@@ -553,7 +570,6 @@ function dp7vi_menu_local_tasks(&$variables) {
  * Returns HTML for a single local task link.
  *
  * @ingroup themeable
- */
 function dp7vi_menu_local_task($variables) {
 	$type = $class = FALSE;
 
@@ -599,7 +615,6 @@ function dp7vi_menu_local_task($variables) {
 
 /**
  * Implements hook_preprocess_menu_link().
- */
 function dp7vi_preprocess_menu_link(&$variables, $hook) {
 	foreach ( $variables ['element'] ['#attributes'] ['class'] as $key => $class ) {
 		switch ($class) {
@@ -633,43 +648,6 @@ function dp7vi_preprocess_menu_link(&$variables, $hook) {
 	array_unshift ( $variables ['element'] ['#localized_options'] ['attributes'] ['class'], 'menu__link' );
 }
 
-/**
- * Returns HTML for status and/or error messages, grouped by type.
- * Using Bootstrap style.
- */
-function dp7vi_status_messages($variables) {
-	$display = $variables ['display'];
-	$output = '';
-
-	$status_heading = array (
-			'status' => t ( 'Status message' ),
-			'error' => t ( 'Error message' ),
-			'warning' => t ( 'Warning message' )
-	);
-	$status_class = array (
-			'status' => 'info',
-			'error' => 'danger',
-			'warning' => 'warning'
-	);
-	foreach ( drupal_get_messages ( $display ) as $type => $messages ) {
-		$class = 'alert alert-' . $status_class [$type];
-		$output .= "<div class=\"$class\">\n";
-		if (! empty ( $status_heading [$type] )) {
-			$output .= '<h2 class="element-invisible">' . $status_heading [$type] . "</h2>\n";
-		}
-		if (count ( $messages ) > 1) {
-			$output .= " <ul class=\"list-unstyled\">\n";
-			foreach ( $messages as $message ) {
-				$output .= '  <li>' . $message . "</li>\n";
-			}
-			$output .= " </ul>\n";
-		} else {
-			$output .= $messages [0];
-		}
-		$output .= "</div>\n";
-	}
-	return $output;
-}
 
 /**
  * Returns HTML for a marker for new or updated content.

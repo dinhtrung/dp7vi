@@ -52,6 +52,7 @@ dependencies[] = ds
 dependencies[] = ds_ui
 dependencies[] = transliteration
 dependencies[] = imce
+dependencies[] = oembed
 dependencies[] = tagadelic
 dependencies[] = tagadelic_taxonomy
 dependencies[] = taxonomy_menu

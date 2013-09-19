@@ -402,7 +402,6 @@ function dp7vi_install() {
   $instance = array(
     'field_name' => 'field_image',
     'entity_type' => 'node',
-    'fences_wrapper' => 'figure',		// Add fences support
     'label' => 'Image',
     'bundle' => 'article',
     'description' => st('Upload an image to go with this article.'),
@@ -495,11 +494,9 @@ function dp7vi_install() {
   // Tuning the l10n_client
   variable_set('l10n_client_server', "http://localize.drupal.org");
   variable_set('l10n_client_use_server', 1);
-
-  // Using fences
-  variable_set('fences_default_classes', 1);
-  variable_set('fences_default_markup', 1);
-
+	
+	// Since we usually support Bootstrap
+	variable_set('jquery_update_jquery_version', "1.7");	
 
   // Create an image field named "Image", enabled for the 'article' content type.
   // Many of the following values will be defaulted, they're included here as an illustrative examples.
@@ -523,7 +520,6 @@ function dp7vi_install() {
     'bundle' => 'user',
     'label' => 'Full Name',
     'required' => 1,
-    'fences_wrapper' => 'figure',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => st('Please enter your full name. This name will be used in your contents.'),

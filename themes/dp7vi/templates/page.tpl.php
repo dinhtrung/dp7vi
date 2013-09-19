@@ -9,7 +9,7 @@
 ?>
 
 <div id="page" class="clearfix">
-	<div id="top-bar">
+	<div id="top-bar" class="top">
 		<div class="container">
 			<div id="top-left" class="col-md-6">
 				<?php print $breadcrumb; ?>
@@ -126,7 +126,7 @@
 
   </div>
 
-  <footer id="footer">
+  <footer id="footer" class="footer">
   	<div class="container clearfix">
   		<div class="row">
 			<?php print render($page['footer_first']); ?>
