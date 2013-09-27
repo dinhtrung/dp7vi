@@ -72,7 +72,6 @@ dependencies[] = i18n
 dependencies[] = i18n_string
 dependencies[] = i18n_variable
 dependencies[] = i18n_translation
-dependencies[] = i18n_select
 dependencies[] = i18n_path
 dependencies[] = i18n_redirect
 dependencies[] = i18n_user
