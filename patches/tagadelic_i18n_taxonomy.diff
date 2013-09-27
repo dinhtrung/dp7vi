@@ -1,0 +1,19 @@
+diff --git a/tagadelic/tagadelic_taxonomy.module b/tagadelic/tagadelic_taxonomy.module
+index f559473..008af4a 100755
+--- a/tagadelic/tagadelic_taxonomy.module
++++ b/tagadelic/tagadelic_taxonomy.module
+@@ -78,6 +78,14 @@ function tagadelic_taxonomy_tags_from_db($max_amount) {
+   $query->addField($alias, 'description');
+   $query->orderBy('count', 'DESC');
+ 
++  /* Add i18n_taxonomy support */
++  if (module_exists('i18n_taxonomy')){
++	$i18n = db_or();
++	$i18n->condition('language', 'und');
++	$i18n->condition('language', i18n_langcode());
++	$query->condition($i18n);
++  }
++
+   foreach(variable_get("tagadelic_taxonomy_vocabularies", array()) as $vid => $state) {
+     if ($state != $vid) { //Disabled
+       $query->condition('t.vid', $vid, '<>');
