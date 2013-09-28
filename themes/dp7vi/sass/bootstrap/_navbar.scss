@@ -19,7 +19,7 @@
   @include clearfix();
 
   @media (min-width: $grid-float-breakpoint) {
-    @include border-radius($navbar-border-radius);
+    border-radius: $navbar-border-radius;
   }
 }
 
@@ -118,7 +118,7 @@
 .navbar-static-top {
   border-width: 0 0 1px;
   @media (min-width: $grid-float-breakpoint) {
-    @include border-radius(0);
+    border-radius: 0;
   }
 }
 
@@ -132,7 +132,7 @@
 
   // Undo the rounded corners
   @media (min-width: $grid-float-breakpoint) {
-    @include border-radius(0);
+    border-radius: 0;
   }
 }
 .navbar-fixed-top {
@@ -178,14 +178,14 @@
   @include navbar-vertical-align(34px);
   background-color: transparent;
   border: 1px solid transparent;
-  @include border-radius($border-radius-base);
+  border-radius: $border-radius-base;
 
   // Bars
   .icon-bar {
     display: block;
     width: 22px;
     height: 2px;
-    @include border-radius(1px);
+    border-radius: 1px;
   }
   .icon-bar + .icon-bar {
     margin-top: 4px;
@@ -203,7 +203,7 @@
 // the nav the full height of the horizontal nav (above 768px).
 
 .navbar-nav {
-  margin: ($navbar-padding-vertical / 2) -$navbar-padding-horizontal;
+  margin: ($navbar-padding-vertical / 2) (-$navbar-padding-horizontal);
 
   > li > a {
     padding-top:    10px;
@@ -259,8 +259,12 @@
 // though so that navbar contents properly stack and align in mobile.
 
 @media (min-width: $grid-float-breakpoint) {
-  .navbar-left  { @include pull-left(); }
-  .navbar-right { @include pull-right(); }
+  .navbar-left {
+    float: left !important;
+  }
+  .navbar-right {
+    float: right !important;
+  }
 }
 
 
@@ -279,7 +283,7 @@
   @include box-shadow($shadow);
 
   // Mixin behavior for optimum display
-  @include form-inline();
+  @extend .form-inline;
 
   .form-group {
     @media (max-width: $screen-xs-max) {

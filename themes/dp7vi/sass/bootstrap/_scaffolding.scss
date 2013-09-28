@@ -80,28 +80,27 @@ img {
 
 // Rounded corners
 .img-rounded {
-  @include border-radius($border-radius-large);
+  border-radius: $border-radius-large;
 }
 
 // Image thumbnails
 //
 // Heads up! This is mixin-ed into thumbnails.less for `.thumbnail`.
-@mixin img-thumbnail {
+.img-thumbnail {
   padding: $thumbnail-padding;
   line-height: $line-height-base;
   background-color: $thumbnail-bg;
   border: 1px solid $thumbnail-border;
-  @include border-radius($thumbnail-border-radius);
+  border-radius: $thumbnail-border-radius;
   @include transition(all .2s ease-in-out);
 
   // Keep them at most 100% wide
   @include img-responsive(inline-block);
 }
-.img-thumbnail { @include img-thumbnail(); }
 
 // Perfect circle
 .img-circle {
-  @include border-radius(50%); // set radius in percents
+  border-radius: 50%; // set radius in percents
 }
 
 

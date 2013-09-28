@@ -40,21 +40,7 @@
     margin-right: 5px;
   }
 
-  // Linked list items
-  a & {
-    color: $list-group-link-color;
-
-    .list-group-item-heading {
-      color: $list-group-link-heading-color;
-    }
-
-    // Hover state
-    &:hover,
-    &:focus {
-      text-decoration: none;
-      background-color: $list-group-hover-bg;
-    }
-  }
+  // [converter] extracted a& to a.list-group-item
 
   // Active class on item itself, not parent
   &.active,
@@ -72,6 +58,22 @@
     .list-group-item-text {
       color: lighten($list-group-active-bg, 40%);
     }
+  }
+}
+
+// Linked list items
+a.list-group-item {
+  color: $list-group-link-color;
+
+  .list-group-item-heading {
+    color: $list-group-link-heading-color;
+  }
+
+  // Hover state
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    background-color: $list-group-hover-bg;
   }
 }
 

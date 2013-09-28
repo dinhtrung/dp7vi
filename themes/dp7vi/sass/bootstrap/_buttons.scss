@@ -18,7 +18,7 @@
   vertical-align: middle;
   cursor: pointer;
   border: 1px solid transparent;
-  @include border-radius($border-radius-base);
+  border-radius: $border-radius-base;
   white-space: nowrap;
   @include user-select(none);
 
@@ -86,7 +86,7 @@
   color: $link-color;
   font-weight: normal;
   cursor: pointer;
-  @include border-radius(0);
+  border-radius: 0;
 
   &,
   &:active,
@@ -121,21 +121,18 @@
 // Button Sizes
 // --------------------------------------------------
 
-@mixin btn-lg {
+.btn-lg {
   // line-height: ensure even-numbered height of button next to large input
   @include button-size($padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
 }
-.btn-lg { @include btn-lg; }
-@mixin btn-sm {
+.btn-sm,
+.btn-xs {
   // line-height: ensure proper height of button next to small input
   @include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
 }
-.btn-sm { @include btn-sm; }
-
-@mixin btn-xs {
+.btn-xs {
   padding: 1px 5px;
 }
-.btn-xs { @include btn-sm; @include btn-xs; }
 
 
 // Block button

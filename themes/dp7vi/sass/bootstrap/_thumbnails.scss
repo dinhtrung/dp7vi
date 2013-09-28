@@ -5,7 +5,7 @@
 
 // Mixin and adjust the regular image class
 .thumbnail {
-  @include img-thumbnail();
+  @extend .img-thumbnail;
   display: block; // Override the inline-block from `.img-thumbnail`
 
   > img {

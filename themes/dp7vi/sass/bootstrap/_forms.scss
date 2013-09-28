@@ -125,7 +125,7 @@ input[type="number"] {
   vertical-align: middle;
   background-color: $input-bg;
   border: 1px solid $input-border;
-  @include border-radius($input-border-radius);
+  border-radius: $input-border-radius;
   @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
   @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
 
@@ -143,10 +143,12 @@ input[type="number"] {
     background-color: $input-bg-disabled;
   }
 
-  // Reset height for `textarea`s
-  textarea & {
-    height: auto;
-  }
+  // [converter] extracted textarea& to textarea.form-control
+}
+
+// Reset height for `textarea`s
+textarea.form-control {
+  height: auto;
 }
 
 
@@ -223,19 +225,10 @@ input[type="checkbox"],
 }
 
 // Form control sizing
-@mixin input-sm {
-  @include input-size($input-height-small, $padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
-}
-.input-sm {
-  @include input-size($input-height-small, $padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
-}
 
-@mixin input-lg {
-  @include input-size($input-height-large, $padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
-}
-.input-lg {
-  @include input-size($input-height-large, $padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
-}
+@include input-size('.input-sm', $input-height-small, $padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $border-radius-small);
+
+@include input-size('.input-lg', $input-height-large, $padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-large, $border-radius-large);
 
 
 // Form control feedback states
@@ -292,7 +285,7 @@ input[type="checkbox"],
 //
 // Heads up! This is mixin-ed into `.navbar-form` in navbars.less.
 
-@mixin form-inline {
+.form-inline {
 
   // Kick in the inline
   @media (min-width: $screen-tablet) {
@@ -325,7 +318,7 @@ input[type="checkbox"],
     }
   }
 }
-.form-inline { @include form-inline(); }
+
 
 // Horizontal forms
 //

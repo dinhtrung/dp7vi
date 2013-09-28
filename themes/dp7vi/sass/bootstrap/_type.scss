@@ -113,14 +113,13 @@ ol {
 // List options
 
 // Unstyled keeps list items block level, just removes default browser padding and list-style
-@mixin list-unstyled {
+.list-unstyled {
   padding-left: 0;
   list-style: none;
 }
-.list-unstyled { @include list-unstyled(); }
 // Inline turns list items into inline-block
 .list-inline {
-  @include list-unstyled();
+  @extend .list-unstyled;
   > li {
     display: inline-block;
     padding-left: 5px;

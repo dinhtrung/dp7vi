@@ -3,8 +3,8 @@
 // Load core variables and mixins
 // --------------------------------------------------
 
-@import "variables";
-@import "mixins";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
 
 
 
@@ -31,8 +31,8 @@
 }
 
 // Mixin for generating new styles
-@include btn-styles($btn-color: #555;) {
-  @include gradient-vertical($start-color: $btn-color; $end-color: darken($btn-color, 10%));
+@mixin btn-styles($btn-color: #555) {
+  @include gradient-vertical($start-color: $btn-color, $end-color: darken($btn-color, 10%));
   border-color: darken($btn-color, 12%);
 
   &:active,
@@ -52,7 +52,7 @@
 }
 
 // Apply the mixin to the buttons
-.btn-default { @include btn-styles($btn-default-bg;); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
+.btn-default { @include btn-styles($btn-default-bg); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
 .btn-primary { @include btn-styles($btn-primary-bg); }
 .btn-success { @include btn-styles($btn-success-bg); }
 .btn-warning { @include btn-styles($btn-warning-bg); }
@@ -81,7 +81,7 @@
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
-  @include gradient-vertical($start-color: $dropdown-link-hover-bg; $end-color: darken($dropdown-link-hover-bg, 5%));
+  @include gradient-vertical($start-color: $dropdown-link-hover-bg, $end-color: darken($dropdown-link-hover-bg, 5%));
   background-color: darken($dropdown-link-hover-bg, 5%);
 }
 
@@ -93,8 +93,8 @@
 
 // Basic navbar
 .navbar {
-  @include gradient-vertical($start-color: lighten($navbar-default-bg, 10%); $end-color: $navbar-default-bg;);
-  @include border-radius($navbar-border-radius);
+  @include gradient-vertical($start-color: lighten($navbar-default-bg, 10%), $end-color: $navbar-default-bg);
+  border-radius: $navbar-border-radius;
   $shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
   @include box-shadow($shadow);
 
@@ -109,7 +109,7 @@
 
 // Inverted navbar
 .navbar-inverse {
-  @include gradient-vertical($start-color: lighten($navbar-inverse-bg, 10%); $end-color: $navbar-inverse-bg;);
+  @include gradient-vertical($start-color: lighten($navbar-inverse-bg, 10%), $end-color: $navbar-inverse-bg);
 
   .navbar-nav > .active > a {
     background-color: $navbar-inverse-bg;
@@ -125,7 +125,7 @@
 .navbar-static-top,
 .navbar-fixed-top,
 .navbar-fixed-bottom {
-  @include border-radius(0);
+  border-radius: 0;
 }
 
 
@@ -142,8 +142,8 @@
 }
 
 // Mixin for generating new styles
-@include alert-styles($color) {
-  @include gradient-vertical($start-color: $color; $end-color: darken($color, 7.5%));
+@mixin alert-styles($color) {
+  @include gradient-vertical($start-color: $color, $end-color: darken($color, 7.5%));
   border-color: darken($color, 15%);
 }
 
@@ -161,12 +161,12 @@
 
 // Give the progress background some depth
 .progress {
-  @include gradient-vertical($start-color: darken($progress-bg, 4%); $end-color: $progress-bg;)
+  @include gradient-vertical($start-color: darken($progress-bg, 4%), $end-color: $progress-bg)
 }
 
 // Mixin for generating new styles
-@include progress-bar-styles($color) {
-  @include gradient-vertical($start-color: $color; $end-color: darken($color, 10%));
+@mixin progress-bar-styles($color) {
+  @include gradient-vertical($start-color: $color, $end-color: darken($color, 10%));
 }
 
 // Apply the mixin to the progress bars
@@ -183,14 +183,14 @@
 // --------------------------------------------------
 
 .list-group {
-  @include border-radius($border-radius-base);
+  border-radius: $border-radius-base;
   @include box-shadow(0 1px 2px rgba(0,0,0,.075));
 }
 .list-group-item.active,
 .list-group-item.active:hover,
 .list-group-item.active:focus {
   text-shadow: 0 -1px 0 darken($list-group-active-bg, 10%);
-  @include gradient-vertical($start-color: $list-group-active-bg; $end-color: darken($list-group-active-bg, 7.5%));
+  @include gradient-vertical($start-color: $list-group-active-bg, $end-color: darken($list-group-active-bg, 7.5%));
   border-color: darken($list-group-active-border, 7.5%);
 }
 
@@ -206,8 +206,8 @@
 }
 
 // Mixin for generating new styles
-@include panel-heading-styles($color) {
-  @include gradient-vertical($start-color: $color; $end-color: darken($color, 5%));
+@mixin panel-heading-styles($color) {
+  @include gradient-vertical($start-color: $color, $end-color: darken($color, 5%));
 }
 
 // Apply the mixin to the panel headings only
@@ -225,7 +225,8 @@
 // --------------------------------------------------
 
 .well {
-  @include gradient-vertical($start-color: darken($well-bg, 5%); $end-color: $well-bg;);
+  @include gradient-vertical($start-color: darken($well-bg, 5%), $end-color: $well-bg);
   border-color: darken($well-bg, 10%);
-  @include box-shadow(inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1));
+  $shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
+  @include box-shadow($shadow);
 }

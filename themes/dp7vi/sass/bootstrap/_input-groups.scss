@@ -29,10 +29,10 @@
 
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,
-.input-group-lg > .input-group-btn > .btn { @include input-lg(); }
+.input-group-lg > .input-group-btn > .btn { @extend .input-lg; }
 .input-group-sm > .form-control,
 .input-group-sm > .input-group-addon,
-.input-group-sm > .input-group-btn > .btn { @include input-sm(); }
+.input-group-sm > .input-group-btn > .btn { @extend .input-sm; }
 
 
 // Display as table-cell
@@ -43,7 +43,7 @@
   display: table-cell;
 
   &:not(:first-child):not(:last-child) {
-    @include border-radius(0);
+    border-radius: 0;
   }
 }
 // Addon and addon wrapper for buttons
@@ -64,18 +64,18 @@
   text-align: center;
   background-color: $input-group-addon-bg;
   border: 1px solid $input-group-addon-border-color;
-  @include border-radius($border-radius-base);
+  border-radius: $border-radius-base;
 
   // Sizing
   &.input-sm {
     padding: $padding-small-vertical $padding-small-horizontal;
     font-size: $font-size-small;
-    @include border-radius($border-radius-small);
+    border-radius: $border-radius-small;
   }
   &.input-lg {
     padding: $padding-large-vertical $padding-large-horizontal;
     font-size: $font-size-large;
-    @include border-radius($border-radius-large);
+    border-radius: $border-radius-large;
   }
 
   // Nuke default margins from checkboxes and radios to vertically center within.
