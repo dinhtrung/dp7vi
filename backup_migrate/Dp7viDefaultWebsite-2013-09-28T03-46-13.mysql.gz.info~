@@ -1,8 +1,0 @@
-filename = "Dp7viDefaultWebsite-2013-09-28T03-46-13"
-description = ""
-datestamp = "1380339974"
-generator = "Backup and Migrate (http://drupal.org/project/backup_migrate)"
-generatorversion = "7.x-2.x"
-sites[0][version] = "7.23"
-sites[0][name] = "Dp7vi Default Website"
-sites[0][url] = "http://default/vi"

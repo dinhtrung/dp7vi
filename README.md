@@ -36,7 +36,7 @@ Các module hỗ trợ ngôn ngữ:
 ~~~
 drush dl drupal
 cd drupal-*
-drush dl backup_migrate ctools ckeditor context devel ds features fences i18n i18nviews imce jquery_update l10n_client l10n_update oembed metatag panels pathauto realname strongarm superfish tagadelic taxonomy_menu token transliteration variable views wysiwyg_filter service_links
+drush dl backup_migrate ctools libraries ckeditor context devel ds features fences i18n i18nviews imce jquery_update l10n_client l10n_update oembed metatag panels pathauto realname strongarm superfish tagadelic taxonomy_menu token transliteration variable views wysiwyg_filter service_links
 wget https://drupal.org/files/i18n_string-Support-text-format-elements-fix-1252144.patch
 cd sites/all/modules/i18n
 patch -p1 < ../i18n_string-Support-text-format-elements-fix-1252144.patch
