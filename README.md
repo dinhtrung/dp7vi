@@ -3,6 +3,9 @@ Drupal 7 Vietnamese Installation Profile
 
 Đây là profile cài đặt cho Drupal tiếng Việt.
 
+» « › ‹ ” “ ’ ‘
+
+
 ## Sử dụng
 
 Download và giải nén `dp7vi` vào thư mục [drupal]/profiles/
@@ -42,4 +45,9 @@ cd sites/all/modules/i18n
 patch -p1 < ../i18n_string-Support-text-format-elements-fix-1252144.patch
 drush si dp7vi
 ~~~
+
+
+## Speed up
+sudo apt-get install memcached php5-apcu php5-memcached
+drush dl memcache_storage
 

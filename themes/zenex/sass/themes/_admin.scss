@@ -1,0 +1,27 @@
+.add-or-remove-shortcuts { display: none; visibility: hidden; }
+
+#overlay-content {
+	.header,
+	.sidebars,
+	.footer { 
+		visibility: hidden;
+    		display: none;
+	}
+	.add-or-remove-shortcuts { display: inline; visibility: show; }
+	.main-content { width: 100%; }
+	
+}
+
+.sticky-table { @extend .table; @extend .table-responsive; }
+
+/*============= Admin Panel =============== */
+div.admin-panel {
+	@extend .panel;
+}
+div.admin-panel .description {
+	@extend .help-block;
+}
+div.admin-panel .body {
+	@extend .panel-body;
+}
+.admin-list dd { @extend .help-block; }
