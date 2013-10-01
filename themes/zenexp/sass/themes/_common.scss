@@ -5,11 +5,13 @@ mark { @extend sup; }
 
 /* ==================== BUTTON ELEMENTS =================================== */
 .button, .form-submit { @extend .btn; @extend .btn-default; }
-#edit-submit { @extend .btn-primary; }
-#edit-preview { @extend .btn-info; }
+#edit-submit, #edit-actions-save { @extend .btn-primary; }
+#edit-preview, #preview-submit { @extend .btn-info; }
 #edit-delete { @extend .btn-danger; }
+#edit-clear, #edit-actions-cancel { @extend .btn-warning; }
 
-
+/* ==================== Action Links ==================================== */
+ul.action-links { @extend .nav; @extend .nav-pills; }
 
 /* ==================== FORM ELEMENTS =================================== */
 .form-item .description { @extend .help-block; }
@@ -27,7 +29,7 @@ mark { @extend sup; }
 	select { @include make-md-column(3); } 
 	.description { @include clearfix(); }
 }
-// Vertical Tabs
+/* ==================== VERTICAL TABS =================================== */
 div.vertical-tabs {
 	margin: 0 0 15px 0;
 }
@@ -35,3 +37,7 @@ div.vertical-tabs {
 	margin: 1px 0 1px 0;
 }
 .vertical-tabs-panes { @extend .panel-body; }
+
+/* ==================== MESSAGES =================================== */
+div.messages { @include border-radius($border-radius-base); }
+

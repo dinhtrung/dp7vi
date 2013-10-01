@@ -24,4 +24,7 @@ div.admin-panel .description {
 div.admin-panel .body {
 	@extend .panel-body;
 }
+.admin-list dt { @extend h4; }
 .admin-list dd { @extend .help-block; }
+
+
