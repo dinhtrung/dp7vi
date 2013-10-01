@@ -6,6 +6,7 @@
  * Complete documentation for this file is available online.
  * @see https://drupal.org/node/1728246
  */
+if ($title) $classes .= " block-with-title"; else $classes .= " block-with-no-title";
 ?>
 <div class="<?php print $classes; ?>"<?php print $attributes; ?> id="<?php print $block_html_id; ?>">
 
@@ -15,6 +16,8 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
-  <?php print $content; ?>
+	<div class="block__body">
+	  <?php print $content; ?>
+	</div>
 
 </div>

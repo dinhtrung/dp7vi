@@ -1,5 +1,6 @@
 @import "colorise";
 
+.page { @extend .container; }
 @include coloriseLumaComplement($brand-primary, 20, 180);
 .header, .footer {
 	@include coloriseBp(); 

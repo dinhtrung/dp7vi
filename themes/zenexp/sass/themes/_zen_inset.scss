@@ -1,0 +1,44 @@
+body { background: $gray-lighter; }
+%container {
+			@include container-fixed();
+			padding: 1em 3%;
+}
+
+.header, .main, .footer { @extend %container; }
+%box-inset {
+	background: #fff;
+	border: 1px solid darken($gray-lighter, 5);
+	@include border-radius($border-radius-base);
+	padding: 0.5em 1em;
+}
+
+@import "colorise";
+.page { }
+	.header { 
+		@include coloriseLumaComplement($gray-dark); 
+		@include coloriseMe(); 
+		.block__title { @include element-invisible(); }
+		ul { list-style: none; li { display: inline; } }
+	}
+		.header__logo {}
+			.header__logo-image {}
+		.header__name-and-slogan {}
+		.header__secondary-menu {}
+		.header__region {}
+		
+	.main {}
+		.main-content { @extend %box-inset; }
+		.main-navigation {}
+		.sidebars {
+			.block-with-title { 
+				@extend %box-inset; 
+				.block__title { @extend .panel-heading; }
+				.block__body { @extend .panel-body; }
+			}
+		}
+			.region-sidebar-first { }
+			.region-sidebar-second { }
+			
+	.footer {
+		@include coloriseLumaComplement($gray-dark); @include coloriseMe();
+	}

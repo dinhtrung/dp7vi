@@ -1,0 +1,35 @@
+/* ============== Page Background and Structure ============*/
+body {}
+	.page { }
+		.header { }
+			.header__logo {}
+				.header__logo-image {}
+			.header__name-and-slogan {}
+			.header__secondary-menu {}
+			.header__region {}
+		
+		.main {}
+			.main-content { }
+				.breadcrumb {}
+				.page__title {}
+				.add-or-remove-shortcuts {}
+				.tabs-primary {}
+				
+			.main-navigation {}
+			.sidebars { }
+				.region-sidebar-first { }
+				.region-sidebar-second { }
+			
+		.footer { }
+
+/* ============== END OF Page Background and Structure ============*/
+
+/* ============== BLOCKS ============*/
+.block {
+	&.block-with-title {}
+	&.block-with-no-title {}
+}
+	.block__title {}
+	.block__body {}
+/* ============== END OF BLOCKS ============*/
+

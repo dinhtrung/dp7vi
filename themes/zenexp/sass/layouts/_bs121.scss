@@ -4,7 +4,7 @@
  */
 $main-position: 'center' !default;
 
-.page { @extend .container; }
+
 .main { @include make-row(); }
 .sidebar-first {
 	.main-content { 
@@ -27,40 +27,44 @@ $main-position: 'center' !default;
 .two-sidebars {
 	@if ($main-position == 'left'){
 		.main-content {
-			@include make-md-column(8);
+			@include make-md-column(6);
+			@include make-lg-column(8);
 		}
 		.region-sidebar-first {
-			@include make-md-column(2); 
+			@include make-md-column(3);
+			@include make-lg-column(2); 
 		}
 		.region-sidebar-second {
-			@include make-md-column(2);
+			@include make-md-column(3);
+			@include make-lg-column(2);
 		}
 	}
 	@if ($main-position == 'right'){
 		.main-content {
-			@include make-md-column(8);
-			@include make-md-column-push(4);
+			@include make-md-column(6);	@include make-md-column-push(3);
+			@include make-lg-column(8);	@include make-lg-column-push(4);
 		}
 		.region-sidebar-first {
-			@include make-md-column(2);
-			@include make-md-column-pull(8);
+			@include make-md-column(3);	@include make-md-column-pull(6);
+			@include make-lg-column(2);	@include make-lg-column-pull(8);
 		}
 		.region-sidebar-second {
-			@include make-md-column(2);
-			@include make-md-column-pull(8);
+			@include make-md-column(3);	@include make-md-column-pull(6);
+			@include make-lg-column(2);	@include make-lg-column-pull(8);
 		}
 	}
 	@if ($main-position == 'center'){
 		.main-content {
-			@include make-md-column(8);
-			@include make-md-column-push(2);
+		  @include make-md-column(6);	@include make-md-column-push(3);
+			@include make-lg-column(8);	@include make-lg-column-push(2);
 		}
 		.region-sidebar-first {
-			@include make-md-column(2); 
-			@include make-md-column-pull(8);
+		  @include make-md-column(3);	@include make-md-column-pull(6);
+			@include make-lg-column(2); @include make-lg-column-pull(8);
 		}
 		.region-sidebar-second {
-			@include make-md-column(2);
+		  @include make-md-column(3);
+			@include make-lg-column(2);
 		}
 	}
 }

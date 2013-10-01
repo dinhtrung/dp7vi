@@ -1,3 +1,4 @@
+mark { @extend sup; }
 /* ==================== TITLE ELEMENTS =================================== */
 .block__title { @extend h4; }
 .main-content table { @extend .table; @extend .table-striped; @extend .table-hover; @extend .table-responsive; }
