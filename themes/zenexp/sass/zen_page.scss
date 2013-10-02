@@ -1,0 +1,127 @@
+/**
+ * @file
+ * Styles are organized using the SMACSS technique. @see http://smacss.com/book/
+ *
+ * When you turn on CSS aggregation at admin/config/development/performance, all
+ * of these @include files will be combined into a single file.
+ */
+
+
+/* =============== BOOTSTRAP 3 CORE =================== */
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+// Reset
+@import "bootstrap/normalize";
+@import "bootstrap/print";
+
+// Core CSS
+@import "bootstrap/scaffolding";
+@import "bootstrap/type";
+@import "bootstrap/code";
+@import "bootstrap/grid";
+@import "bootstrap/tables";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
+/* =============== END OF BOOTSTRAP 3 CORE =================== */
+
+
+/* =============== ORIGINAL ZEN =================== */
+/* Import Sass mixins, variables, Compass modules, etc. */
+@import "init";
+
+/* HTML element (SMACSS base) rules */
+/* REMOVED DUE TO Bootstrap CORE */
+/* @import "normalize"; */
+
+
+/* Layout rules */
+/* REMOVED DUE TO Bootstrap CORE */
+/* @import "layouts/responsive"; */
+
+/* Component (SMACSS module) rules */
+@import "components/element-invisible";
+@import "components/inline";
+
+@import "components/forms-drupal";
+@import "components/autocomplete";
+@import "components/button";
+@import "components/collapsible-fieldsets";
+@import "components/form-tables";
+@import "components/progress-bar";
+@import "components/tabledrag";
+
+@import "components/block";
+@import "components/breadcrumb";
+@import "components/comments";
+@import "components/header";
+@import "components/highlight-mark";
+@import "components/messages";
+@import "components/more-link";
+@import "components/navbar";
+@import "components/pager";
+@import "components/side-menu";
+@import "components/skip-link";
+@import "components/tabs";
+//@import "components/watermark";
+//@import "components/wireframes";
+
+@import "print";
+
+
+/* =============== END OF ZEN COMPONENTS =================== */
+
+
+
+
+/* =============== BOOTSTRAP 3 COMPONENTS =================== */
+// Components
+@import "bootstrap/component-animations";
+@import "bootstrap/glyphicons";
+@import "bootstrap/dropdowns";
+@import "bootstrap/button-groups";
+@import "bootstrap/input-groups";
+@import "bootstrap/navs";
+@import "bootstrap/navbar";
+@import "bootstrap/breadcrumbs";
+@import "bootstrap/pagination";
+@import "bootstrap/pager";
+@import "bootstrap/labels";
+@import "bootstrap/badges";
+@import "bootstrap/jumbotron";
+@import "bootstrap/thumbnails";
+@import "bootstrap/alerts";
+@import "bootstrap/progress-bars";
+@import "bootstrap/media";
+@import "bootstrap/list-group";
+@import "bootstrap/panels";
+@import "bootstrap/wells";
+@import "bootstrap/close";
+
+// Components w/ JavaScript
+@import "bootstrap/modals";
+@import "bootstrap/tooltip";
+@import "bootstrap/popovers";
+@import "bootstrap/carousel";
+
+/* =============== END OF BOOTSTRAP 3 COMPONENTS =================== */
+
+// Utility classes
+@import "bootstrap/utilities";
+@import "bootstrap/responsive-utilities";
+
+/* =============== END OF BOOTSTRAP 3 =================== */
+
+/* =============== CHOOSE THE BOOTSTRAP LAYOUTS YOU NEED =================== */
+$main-position: 'center'; // left|right - This is for .two-sidebars
+@import "layouts/bs121";
+/* =============== CHOOSE THE BOOTSTRAP LAYOUTS YOU NEED =================== */
+
+/* SMACSS theme rules */
+/* @import "theme-A"; */
+/* @import "theme-B"; */
+@import "themes/common";
+@import "themes/admin";		// Common settings for admin theme.
+@import "themes/zen_page";
+
