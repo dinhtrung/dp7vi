@@ -6,6 +6,10 @@
  * of these @include files will be combined into a single file.
  */
 
+/* =============== INITIALIZE: Customize the variables  =================== */
+//@import "init/[theme_name]";
+@import "init/zen_inset";
+
 
 /* =============== BOOTSTRAP 3 CORE =================== */
 // Core variables and mixins
@@ -114,7 +118,7 @@
 /* =============== END OF BOOTSTRAP 3 =================== */
 
 /* =============== CHOOSE THE BOOTSTRAP LAYOUTS YOU NEED =================== */
-$main-position: 'center'; // left|right - This is for .two-sidebars
+$main-position: 'left'; // left|right - This is for .two-sidebars
 @import "layouts/bs121";
 /* =============== CHOOSE THE BOOTSTRAP LAYOUTS YOU NEED =================== */
 

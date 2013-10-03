@@ -1,0 +1,12 @@
+@import "colorise";
+@include coloriseLumaAnalogous($gray-dark, 20, 200);
+.header, .footer {
+	@include coloriseMe(); 
+}
+
+
+.page { @extend .container; }
+.header, .main-navigation, .main, .footer { @include make-row(); }
+.header, .footer { padding: $padding-base-vertical $padding-base-horizontal;}
+.main-navigation { @extend .container; } .navbar-default { @extend .row; }
+

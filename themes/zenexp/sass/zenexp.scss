@@ -5,6 +5,9 @@
  * When you turn on CSS aggregation at admin/config/development/performance, all
  * of these @include files will be combined into a single file.
  */
+/* =============== INITIALIZE: Customize the variables  =================== */
+//@import "init/[theme_name]";
+@import "init/zenexp";
 
 
 /* =============== BOOTSTRAP 3 CORE =================== */
@@ -115,8 +118,6 @@
 
 /* =============== CHOOSE THE BOOTSTRAP LAYOUTS YOU NEED =================== */
 $main-position: 'center'; // left|right - This is for .two-sidebars
-$main-position: 'left'; // left|right - This is for .two-sidebars
-$main-position: 'right'; // left|right - This is for .two-sidebars
 @import "layouts/bs121";
 /* =============== CHOOSE THE BOOTSTRAP LAYOUTS YOU NEED =================== */
 
@@ -125,5 +126,5 @@ $main-position: 'right'; // left|right - This is for .two-sidebars
 /* @import "theme-B"; */
 @import "themes/common";
 @import "themes/admin";		// Common settings for admin theme.
-@import "themes/zenex";
+@import "themes/zenexp";
 

@@ -49,6 +49,52 @@
     <?php print render($page['header']); ?>
 
   </header>
+  
+  <div class="main-navigation">
+		<?php if ($main_menu || $secondary_menu): ?>
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="main-menu">
+						<span class="sr-only"><?php print t('Toggle navigation'); ?></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand visible-sm" href="#"><?php print ($site_name)?$site_name:t('Main menu'); ?></a>
+				</div>
+				<nav class="collapse navbar-collapse main-menu" role="navigation" id="main-menu" tabindex="-1">
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<?php if ($main_menu): ?>
+							<?php print theme('links__system_main_menu', array(
+								'links' => $main_menu,
+								'attributes' => array(
+									'class' => array('nav navbar-nav'),
+								),
+							)); ?>
+					<?php endif; ?>
+					<!-- End of main_menu -->
+					
+					<!-- Start of secondary menu -->
+					<?php if ($secondary_menu): ?>
+						<ul class="nav navbar-nav navbar-right">
+					    <li class="dropdown">
+		      			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php print $secondary_menu_heading; ?> <b class="caret"></b></a>
+								<?php print theme('links__system_secondary_menu', array(
+								  'links' => $secondary_menu,
+								  'attributes' => array(
+								    'class' => array('dropdown-menu'),
+								  ),
+								)); ?>
+					    </li>
+				    </ul>
+					<?php endif; ?><!-- End of secondary menu -->
+				</nav>
+			</nav>	
+		<?php endif; ?>
+		
+		<?php print render($page['navigation']); ?>
+  </div>
 
   <div class="main">
 
@@ -69,33 +115,6 @@
       <?php endif; ?>
       <?php print render($page['content']); ?>
       <?php print $feed_icons; ?>
-    </div>
-
-    <div class="main-navigation">
-
-      <?php if ($main_menu): ?>
-        <nav class="main-menu" role="navigation" id="main-menu" tabindex="-1">
-          <?php
-          // This code snippet is hard to modify. We recommend turning off the
-          // "Main menu" on your sub-theme's settings form, deleting this PHP
-          // code block, and, instead, using the "Menu block" module.
-          // @see https://drupal.org/project/menu_block
-          print theme('links__system_main_menu', array(
-            'links' => $main_menu,
-            'attributes' => array(
-              'class' => array('links', 'inline', 'clearfix'),
-            ),
-            'heading' => array(
-              'text' => t('Main menu'),
-              'level' => 'h2',
-              'class' => array('element-invisible'),
-            ),
-          )); ?>
-        </nav>
-      <?php endif; ?>
-
-      <?php print render($page['navigation']); ?>
-
     </div>
 
     <?php
